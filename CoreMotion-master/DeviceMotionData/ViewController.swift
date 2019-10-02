@@ -42,7 +42,7 @@ class ViewController: UIViewController {
 	@IBAction func getDeviceMotion(_ sender: UIButton) {
 		
 		// 设置获取的时间间隔
-		motionManager.deviceMotionUpdateInterval = 1.0 / 30.0
+		motionManager.deviceMotionUpdateInterval = 1.0 / 100.0
 		//motionManager.showsDeviceMovementDisplay = true
 		// 开始获取数据
 		motionManager.startDeviceMotionUpdates(to: OperationQueue.current!) { (motions, error) in
