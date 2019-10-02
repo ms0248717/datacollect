@@ -57,10 +57,10 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     %axis([-inf, inf, -0.01, 0.01]);
     %return
 
-    %Convert to cm
-    ax = ax .* 980;
-    ay = ay .* 980;
-    az = az .* 980;
+    %Convert to m
+    ax = ax .* 9.8;
+    ay = ay .* 9.8;
+    az = az .* 9.8;
 
     %Integration into velocity
     [vx, vy, vz] = integral(ax, ay, az, datasize(1), dt);
@@ -94,19 +94,19 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     subplot(3,1,1);
     plot(vx);
     xlabel('sample')
-    ylabel('cm/s')
+    ylabel('m/s')
     title('X-Velocity')
     %axis([-inf, inf, -0.01, 0.01]);
     subplot(3,1,2)
     plot(vy);
     xlabel('sample')
-    ylabel('cm/s')
+    ylabel('m/s')
     title('Y-Velocity')
     %axis([-inf, inf, -0.01, 0.01]);
     subplot(3,1,3)
     plot(vz);
     xlabel('sample')
-    ylabel('cm/s^2')
+    ylabel('m/s^2')
     title('Z-Velocity')
     %axis([-inf, inf, -0.01, 0.01]);
     %return;
