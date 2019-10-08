@@ -1,4 +1,4 @@
-function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, ConvergeRate)
+function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, ConvergeRate, SpeedRate)
 
     dt = 1 / freq;
 
@@ -34,6 +34,11 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
             az(i) = 0;
         end
     end
+    
+    %Zoom acceleration
+    ax = ax * SpeedRate;
+    ay = ay * SpeedRate;
+    az = az * SpeedRate;
 
     %plot acceleration
     figure;

@@ -11,7 +11,7 @@ az = rawdata.data(:,3);
 datacollectfreq = 30;
 noiserange = 0.015;
 ConvergeRate = 1.0;
-
+SpeedRate = 1.0;
 
 ReaderPosition = [0 0 3];
 %phaseshift = rand * 2 * pi;
@@ -21,31 +21,22 @@ lambda = C / freq;
 
 
 %Acceleration to Position
-[dx, dy, dz] = CalibrationPosition(ax, ay, az, datacollectfreq, noiserange, ConvergeRate);
+[dx, dy, dz] = CalibrationPosition(ax, ay, az, datacollectfreq, noiserange, ConvergeRate, SpeedRate);
 %[dx, dy, dz] = Position(ax, ay, az, datacollectfreq);
-
-%Rotation data
-randR = rand * 360;
-xR = dx*cosd(randR) + dy*sind(randR);
-yR = -dx*sind(randR) + dy*cosd(randR);
+%return;
 
 %Translation data
-randTx = 2 - (rand * 4);
-randTy = 2 - (rand * 4);
-randTz = 0.15 - (rand * 0.3);
-xT = xR + randTx;
-yT = yR + randTy;
-zT = dz + randTz + 1.5;
+[Tx, Ty, Tz] = TranslationData(dx, dy, dz); 
 figure;
-plot3(xT, yT, zT, '*')
+plot3(Tx, Ty, Tz, '*')
 hold on;
 plot3(0, 0, 3, 'o');
 legend('Trajectory','Reader')
 hold off;
 
 %Position to Phase
-datasize = size(xT);
-P_A = [xT yT zT];
+datasize = size(Tx);
+P_A = [Tx Ty Tz];
 length = dist(P_A, ReaderPosition') * 2;
 phase = (mod(length, lambda)/ lambda) * 2 * pi;
 figure;
