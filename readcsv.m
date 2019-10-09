@@ -10,7 +10,7 @@ az = rawdata.data(:,3);
 %Define parameters
 datacollectfreq = 30;
 noiserange = 0.015;
-ConvergeRate = 1.0;
+ConvergeRate = 0.8;
 SpeedRate = 1.0;
 
 ReaderPosition = [0 0 3];
@@ -23,7 +23,7 @@ lambda = C / freq;
 %Acceleration to Position
 [dx, dy, dz] = CalibrationPosition(ax, ay, az, datacollectfreq, noiserange, ConvergeRate, SpeedRate);
 %[dx, dy, dz] = Position(ax, ay, az, datacollectfreq);
-%return;
+return;
 
 %Translation data
 [Tx, Ty, Tz] = TranslationData(dx, dy, dz); 

@@ -42,7 +42,7 @@ class ViewController: UIViewController {
 	@IBAction func getDeviceMotion(_ sender: UIButton) {
 		
 		// 设置获取的时间间隔
-		motionManager.deviceMotionUpdateInterval = 1.0 / 100.0
+		motionManager.deviceMotionUpdateInterval = 1.0 / 30.0
 		//motionManager.showsDeviceMovementDisplay = true
 		// 开始获取数据
 		motionManager.startDeviceMotionUpdates(to: OperationQueue.current!) { (motions, error) in
@@ -66,6 +66,7 @@ class ViewController: UIViewController {
             let x = motion.userAcceleration.x
             let y = motion.userAcceleration.y
             let z = motion.userAcceleration.z
+            let zero = 0
             //print(motion.rotationRate)
             
             self.number += 1
@@ -73,6 +74,36 @@ class ViewController: UIViewController {
             self.csvText.append(contentsOf: newLine)
             print(self.number)
 			//print(motion.userAcceleration)
+            
+            if(self.number == 210){
+                self.motionManager.stopDeviceMotionUpdates()
+                print(self.csvText)
+                let fileManager = FileManager.default
+                do {
+                    //let path = Bundle.main.path(forResource: "data", ofType: "csv")
+                    let path = try fileManager.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false)
+                    let fileURL = path.appendingPathComponent("data.csv")
+                    try self.csvText.write(to: fileURL, atomically: true, encoding: .utf8)
+                    let vc = UIActivityViewController(activityItems: [path], applicationActivities: [])
+                    vc.excludedActivityTypes = [
+                        UIActivityType.assignToContact,
+                        UIActivityType.saveToCameraRoll,
+                        UIActivityType.postToFlickr,
+                        UIActivityType.postToVimeo,
+                        UIActivityType.postToTencentWeibo,
+                        UIActivityType.postToTwitter,
+                        UIActivityType.postToFacebook,
+                        UIActivityType.openInIBooks
+                    ]
+                    self.present(vc, animated: true, completion: nil)
+                    self.csvText.removeAll()
+                    self.csvText = "\("x"),\("y"),\("z")\n"
+                    self.number = 0
+                    //print(path)
+                } catch {
+                    print("error creating file")
+                }
+            }
 			
 		}
 		//  注意： 下边的两种方法会导致，上边的那种方法失效，用的时候请根据自己的需求选择
