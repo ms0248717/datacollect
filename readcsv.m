@@ -23,7 +23,7 @@ lambda = C / freq;
 %Acceleration to Position
 [dx, dy, dz] = CalibrationPosition(ax, ay, az, datacollectfreq, noiserange, ConvergeRate, SpeedRate);
 %[dx, dy, dz] = Position(ax, ay, az, datacollectfreq);
-return;
+
 
 %Translation data
 [Tx, Ty, Tz] = TranslationData(dx, dy, dz); 
