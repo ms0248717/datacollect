@@ -1,0 +1,72 @@
+close all;
+clear;
+
+%Load data
+right1 = importdata('./Trajectory/right/Documents/data.csv');
+right2 = importdata('./Trajectory/right/Documents 2/data.csv');
+right3 = importdata('./Trajectory/right/Documents 3/data.csv');
+right4 = importdata('./Trajectory/right/Documents 4/data.csv');
+right5 = importdata('./Trajectory/right/Documents 5/data.csv');
+rights = [right1 right2 right3 right4 right5];
+
+shake1 = importdata('./Trajectory/shake/Documents/data.csv');
+shake2 = importdata('./Trajectory/shake/Documents 2/data.csv');
+shake3 = importdata('./Trajectory/shake/Documents 3/data.csv');
+shake4 = importdata('./Trajectory/shake/Documents 4/data.csv');
+shake5 = importdata('./Trajectory/shake/Documents 5/data.csv');
+shakes = [shake1 shake2 shake3 shake4 shake5];
+
+motions = [rights shakes];
+
+%train data
+typesize = 2;
+trainsize = 4000;
+X_phasedata = [];
+X_rssidata = [];
+X_label = zeros(1, trainsize);
+for i=1:trainsize
+    
+    typerand = unidrnd(typesize);
+    nrand = unidrnd(5);
+    speedrand = rand*2 + 0.5;
+    rawdata = motions((typerand - 1) * 5 + nrand);
+    [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
+    
+    X_label(i) = typerand;
+    X_phasedata = [X_phasedata phase];
+    X_rssidata = [X_rssidata RSSI];
+    
+end
+
+%test data
+testsize = 1000;
+Y_phasedata = [];
+Y_rssidata = [];
+Y_label = zeros(1, testsize);
+for i=1:testsize
+    
+    typerand = unidrnd(typesize);
+    nrand = unidrnd(5);
+    speedrand = rand*2 + 0.5;
+    rawdata = motions((typerand - 1) * 5 + nrand);
+    [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
+    
+    Y_label(i) = typerand;
+    Y_phasedata = [Y_phasedata phase];
+    Y_rssidata = [Y_rssidata RSSI];
+    
+end
+
+%write file
+csvwrite('./ML_data/X_label.csv', X_label);
+csvwrite('./ML_data/X_phase.csv', X_phasedata);
+csvwrite('./ML_data/X_rssi.csv', X_rssidata);
+csvwrite('./ML_data/Y_label.csv', Y_label);
+csvwrite('./ML_data/X_phase.csv', Y_phasedata);
+csvwrite('./ML_data/X_label.csv', Y_rssidata);
+
+
+
+
+
+

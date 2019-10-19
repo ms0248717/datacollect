@@ -40,6 +40,8 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     ay = ay * SpeedRate;
     az = az * SpeedRate;
 
+    %%
+    %{
     %plot acceleration
     figure;
     subplot(3,1,1);
@@ -61,6 +63,9 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     title('Z-Acceleration')
     %axis([-inf, inf, -0.01, 0.01]);
     %return
+    %}
+    
+    %%
 
     %Convert to m
     ax = ax .* 9.8;
@@ -94,6 +99,8 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     %Integration into displacement
     [dx, dy, dz] = integral(vx, vy, vz, datasize(1)+1, dt);
 
+    %%
+    %{
     %plot velocity
     figure;
     subplot(3,1,1);
@@ -123,4 +130,6 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     %axis([-5, 5, -5, 5]);
     figure;
     plot3(dx, dy, dz, '*')
+    %}
+    
 end
