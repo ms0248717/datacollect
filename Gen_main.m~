@@ -21,6 +21,7 @@ motions = [rights shakes];
 %train data
 typesize = 2;
 trainsize = 4000;
+name = [];
 X_phasedata = [];
 X_rssidata = [];
 X_label = zeros(1, trainsize);
@@ -35,8 +36,16 @@ for i=1:trainsize
     X_label(i) = typerand;
     X_phasedata = [X_phasedata phase];
     X_rssidata = [X_rssidata RSSI];
+    name = [name i];
     
 end
+return;
+csvwrite('./ML_data/train_label.csv', name);
+dlmwrite('./ML_data/train_label.csv', Y_label, '-append');
+csvwrite('./ML_data/X_phase.csv', name);
+csvwrite('./ML_data/X_phase.csv', X_phasedata);
+csvwrite('./ML_data/X_label.csv', name);
+csvwrite('./ML_data/X_rssi.csv', X_rssidata);
 
 %test data
 testsize = 1000;
@@ -57,13 +66,12 @@ for i=1:testsize
     
 end
 
+
+
 %write file
-csvwrite('./ML_data/X_label.csv', X_label);
-csvwrite('./ML_data/X_phase.csv', X_phasedata);
-csvwrite('./ML_data/X_rssi.csv', X_rssidata);
 csvwrite('./ML_data/Y_label.csv', Y_label);
-csvwrite('./ML_data/X_phase.csv', Y_phasedata);
-csvwrite('./ML_data/X_label.csv', Y_rssidata);
+csvwrite('./ML_data/Y_phase.csv', X_phasedata);
+csvwrite('./ML_data/Y_rssi.csv', X_rssidata);
 
 
 

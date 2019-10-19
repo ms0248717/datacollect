@@ -21,49 +21,64 @@ motions = [rights shakes];
 %train data
 typesize = 2;
 trainsize = 4000;
-X_phasedata = [];
-X_rssidata = [];
-X_label = zeros(1, trainsize);
+name = [];
+train_phasedata = [];
+train_rssidata = [];
+train_label = zeros(1, trainsize);
 for i=1:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*2 + 0.5;
+    speedrand = rand*1 + 0.5;
+    speedrand = 1;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
     
-    X_label(i) = typerand;
-    X_phasedata = [X_phasedata phase];
-    X_rssidata = [X_rssidata RSSI];
+    train_label(i) = typerand - 1;
+    train_phasedata = [train_phasedata phase];
+    train_rssidata = [train_rssidata RSSI];
+    name = [name i];
     
 end
 
+%write train data file
+csvwrite('./ML_data/train_label.csv', name);
+dlmwrite('./ML_data/train_label.csv', train_label, '-append');
+csvwrite('./ML_data/train_phase.csv', name);
+dlmwrite('./ML_data/train_phase.csv', train_phasedata, '-append');
+csvwrite('./ML_data/train_rssi.csv', name);
+dlmwrite('./ML_data/train_rssi.csv', train_rssidata, '-append');
+
 %test data
 testsize = 1000;
-Y_phasedata = [];
-Y_rssidata = [];
-Y_label = zeros(1, testsize);
+name = [];
+test_phasedata = [];
+test_rssidata = [];
+test_label = zeros(1, testsize);
 for i=1:testsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*2 + 0.5;
+    speedrand = rand*1 + 0.5;
+    speedrand = 1;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
     
-    Y_label(i) = typerand;
-    Y_phasedata = [Y_phasedata phase];
-    Y_rssidata = [Y_rssidata RSSI];
-    
+    test_label(i) = typerand - 1;
+    test_phasedata = [test_phasedata phase];
+    test_rssidata = [test_rssidata RSSI];
+    name = [name i];
 end
 
-%write file
-csvwrite('./ML_data/X_label.csv', X_label);
-csvwrite('./ML_data/X_phase.csv', X_phasedata);
-csvwrite('./ML_data/X_rssi.csv', X_rssidata);
-csvwrite('./ML_data/Y_label.csv', Y_label);
-csvwrite('./ML_data/Y_phase.csv', Y_phasedata);
-csvwrite('./ML_data/Y_rssi.csv', Y_rssidata);
+
+
+%write test data file
+csvwrite('./ML_data/test_label.csv', name);
+dlmwrite('./ML_data/test_label.csv', test_label, '-append');
+csvwrite('./ML_data/test_phase.csv', name);
+dlmwrite('./ML_data/test_phase.csv', test_phasedata, '-append');
+csvwrite('./ML_data/test_rssi.csv', name);
+dlmwrite('./ML_data/test_rssi.csv', test_rssidata, '-append');
 
 
 
