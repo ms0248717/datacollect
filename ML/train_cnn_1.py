@@ -128,6 +128,7 @@ y_train = y_train.astype("float32")
 
 # %%
 
+
 # One-hot encoding of y_train labels (only execute once!)
 y_train = np_utils.to_categorical(y_train, num_classes)
 print('New y_train shape: ', y_train.shape)
@@ -140,11 +141,11 @@ print("\n--- Create neural network model ---\n")
 # 1D CNN neural network
 model_m = Sequential()
 model_m.add(Reshape((num_time_periods, num_sensors), input_shape=(input_shape,)))
-model_m.add(Conv1D(200, 20, activation='relu', input_shape=(num_time_periods, num_sensors)))
-model_m.add(Conv1D(200, 20, activation='relu'))
+model_m.add(Conv1D(100, 20, activation='relu', input_shape=(num_time_periods, num_sensors)))
+model_m.add(Conv1D(100, 20, activation='relu'))
 model_m.add(MaxPooling1D(3))
-model_m.add(Conv1D(220, 10, activation='relu'))
-model_m.add(Conv1D(220, 10, activation='relu'))
+model_m.add(Conv1D(160, 10, activation='relu'))
+model_m.add(Conv1D(160, 10, activation='relu'))
 model_m.add(GlobalAveragePooling1D())
 model_m.add(Dropout(0.5))
 model_m.add(Dense(num_classes, activation='softmax'))
@@ -163,7 +164,7 @@ callbacks_list = [
     keras.callbacks.ModelCheckpoint(
         filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
         monitor='val_loss', save_best_only=True),
-    keras.callbacks.EarlyStopping(monitor='acc', patience=1)
+    # keras.callbacks.EarlyStopping(monitor='acc', patience=1)
 ]
 
 model_m.compile(loss='categorical_crossentropy',
@@ -188,8 +189,8 @@ print("\n--- Learning curve of model training ---\n")
 
 # summarize history for accuracy and loss
 plt.figure(figsize=(6, 4))
-plt.plot(history.history['accuracy'], "g--", label="Accuracy of training data")
-plt.plot(history.history['val_accuracy'], "g", label="Accuracy of validation data")
+plt.plot(history.history['acc'], "g--", label="Accuracy of training data")
+plt.plot(history.history['val_acc'], "g", label="Accuracy of validation data")
 plt.plot(history.history['loss'], "r--", label="Loss of training data")
 plt.plot(history.history['val_loss'], "r", label="Loss of validation data")
 plt.title('Model Accuracy and Loss')

@@ -29,8 +29,7 @@ for i=1:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*1 + 0.5;
-    speedrand = 1;
+    speedrand = rand*2 + 0.5;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
     
@@ -59,8 +58,7 @@ for i=1:testsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*1 + 0.5;
-    speedrand = 1;
+    speedrand = rand*2 + 0.5;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
     

@@ -134,10 +134,10 @@ print('New y_train shape: ', y_train.shape)
 # (4173, 6)
 
 # %%
-model = load_model('best_model.50-0.06.h5')
+model = load_model('./bestmodel/C1_0.05.h5')
 
-x_test = X_train
-y_test = Y_train
+x_test = X_test
+y_test = Y_test
 
 x_test = x_test.reshape(x_test.shape[0], input_shape)
 
