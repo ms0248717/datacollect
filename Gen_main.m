@@ -16,10 +16,27 @@ shake4 = importdata('./Trajectory/shake/Documents 4/data.csv');
 shake5 = importdata('./Trajectory/shake/Documents 5/data.csv');
 shakes = [shake1 shake2 shake3 shake4 shake5];
 
-motions = [rights shakes];
+square1 = importdata('./Trajectory/square/Documents/data.csv');
+square2 = importdata('./Trajectory/square/Documents 2/data.csv');
+square3 = importdata('./Trajectory/square/Documents 3/data.csv');
+square4 = importdata('./Trajectory/square/Documents 4/data.csv');
+square5 = importdata('./Trajectory/square/Documents 5/data.csv');
+square = [square1 square2 square3 square4 square5];
+
+circle1 = importdata('./Trajectory/circle/Documents/data.csv');
+circle2 = importdata('./Trajectory/circle/Documents 2/data.csv');
+circle3 = importdata('./Trajectory/circle/Documents 3/data.csv');
+circle4 = importdata('./Trajectory/circle/Documents 4/data.csv');
+circle5 = importdata('./Trajectory/circle/Documents 5/data.csv');
+circle = [circle1 circle2 circle3 circle4 circle5];
+
+still1 = importdata('./Trajectory/still/Documents/data.csv');
+still = [still1 still1 still1 still1 still1];
+
+motions = [rights shakes square circle still];
 
 %train data
-typesize = 2;
+typesize = 5;
 trainsize = 4000;
 name = [];
 train_phasedata = [];
