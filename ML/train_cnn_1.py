@@ -19,6 +19,9 @@ def feature_normalize(dataset):
 
     mu = np.mean(dataset, axis=0)
     sigma = np.std(dataset, axis=0)
+    for i in range(0, dataset.shape[1]):
+        if sigma[i] == 0:
+            sigma[i] = 1
     return (dataset - mu)/sigma
 
 def show_confusion_matrix(validations, predictions):
@@ -47,7 +50,7 @@ weight_save = 0
 model_save = 0
 store = 1
 high_acc = 0
-LABELS = ["0","1"]
+LABELS = ["right","shake","square","circle","still"]
 
 trainlabel = read_data('../ML_data/train_label.csv')
 trainphase = read_data('../ML_data/train_phase.csv')
@@ -111,7 +114,7 @@ print('y_train shape: ', y_train.shape)
 
 # Set input & output dimensions
 num_time_periods, num_sensors = x_train.shape[1], x_train.shape[2]
-num_classes = 2
+num_classes = 5
 
 # Set input_shape / reshape for Keras
 # Remark: acceleration data is concatenated in one array in order to feed

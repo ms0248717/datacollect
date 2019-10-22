@@ -21,23 +21,25 @@ square2 = importdata('./Trajectory/square/Documents 2/data.csv');
 square3 = importdata('./Trajectory/square/Documents 3/data.csv');
 square4 = importdata('./Trajectory/square/Documents 4/data.csv');
 square5 = importdata('./Trajectory/square/Documents 5/data.csv');
-square = [square1 square2 square3 square4 square5];
+squares = [square1 square2 square3 square4 square5];
 
 circle1 = importdata('./Trajectory/circle/Documents/data.csv');
 circle2 = importdata('./Trajectory/circle/Documents 2/data.csv');
 circle3 = importdata('./Trajectory/circle/Documents 3/data.csv');
 circle4 = importdata('./Trajectory/circle/Documents 4/data.csv');
 circle5 = importdata('./Trajectory/circle/Documents 5/data.csv');
-circle = [circle1 circle2 circle3 circle4 circle5];
+circles = [circle1 circle2 circle3 circle4 circle5];
 
 still1 = importdata('./Trajectory/still/Documents/data.csv');
 still = [still1 still1 still1 still1 still1];
 
-motions = [rights shakes square circle still];
+motions = [rights shakes squares circles still];
 
 %train data
 typesize = 5;
 trainsize = 4000;
+phase_noise = 10;
+rssi_noise = 20;
 name = [];
 train_phasedata = [];
 train_rssidata = [];
@@ -46,10 +48,13 @@ for i=1:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*2 + 0.5;
+    speedrand = rand*3 + 0.5;
+    speedrand = 1;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
-    
+    phase = awgn(phase, phase_noise);
+    RSSI = awgn(RSSI, rssi_noise);
+    [phase] = phase_cor(phase); 
     train_label(i) = typerand - 1;
     train_phasedata = [train_phasedata phase];
     train_rssidata = [train_rssidata RSSI];
@@ -75,10 +80,12 @@ for i=1:testsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*2 + 0.5;
+    speedrand = rand*3 + 0.5;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
-    
+    phase = awgn(phase, phase_noise);
+    RSSI = awgn(RSSI, rssi_noise);
+    [phase] = phase_cor(phase); 
     test_label(i) = typerand - 1;
     test_phasedata = [test_phasedata phase];
     test_rssidata = [test_rssidata RSSI];
