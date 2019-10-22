@@ -66,6 +66,10 @@ X_testrssi = np.asarray(testrssi, dtype= np.float32)
 
 Y_train = Y_trainlabel.T
 Y_test = Y_testlabel.T
+X_trainphase = feature_normalize(X_trainphase)
+X_trainrssi = feature_normalize(X_trainrssi)
+X_testphase = feature_normalize(X_testphase)
+X_testrssi = feature_normalize(X_testrssi)
 #print(Y_train.shape)
 
 trainsize = Y_train.shape[0]
@@ -164,7 +168,7 @@ callbacks_list = [
     keras.callbacks.ModelCheckpoint(
         filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
         monitor='val_loss', save_best_only=True),
-    # keras.callbacks.EarlyStopping(monitor='acc', patience=1)
+    keras.callbacks.EarlyStopping(monitor='acc', patience=1)
 ]
 
 model_m.compile(loss='categorical_crossentropy',

@@ -66,6 +66,10 @@ X_testrssi = np.asarray(testrssi, dtype= np.float32)
 
 Y_train = Y_trainlabel.T
 Y_test = Y_testlabel.T
+X_trainphase = feature_normalize(X_trainphase)
+X_trainrssi = feature_normalize(X_trainrssi)
+X_testphase = feature_normalize(X_testphase)
+X_testrssi = feature_normalize(X_testrssi)
 #print(Y_train.shape)
 
 trainsize = Y_train.shape[0]
@@ -134,7 +138,7 @@ print('New y_train shape: ', y_train.shape)
 # (4173, 6)
 
 # %%
-model = load_model('./bestmodel/C1_0.05.h5')
+model = load_model('./bestmodel/CN1.h5')
 
 x_test = X_test
 y_test = Y_test
