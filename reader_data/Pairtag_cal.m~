@@ -27,35 +27,31 @@ phasecor = (phase ./ freq) .* centerfreq;
 
 [rawEPC, rawphase, rawrssi, rawSIZE] = AddBlank(time, EPC, phasecor, rssi, rawdataSIZE);
 
-hum_phase = zeros(rawSIZE, humSIZE);
-obj_phase = zeros(rawSIZE, objSIZE);
-hum_idx = zeros(rawSIZE, humSIZE);
-obj_idx = zeros(rawSIZE, objSIZE);
-hum_firstT = zeros(humSIZE, 1);
-hum_endT = zeros(humSIZE, 1);
-obj_firstT = zeros(objSIZE, 1);
-obj_endT = zeros(objSIZE, 1);
 
-for i=1:humSIZE
-    hum_idx(:,i) = ismember(rawEPC, humID(i));
-    idx = find(hum_idx(:,i));
-    phase_unwrap = Unwrapping(rawphase(idx), size(rawphase(idx,1)));
-    hum_firstT(i) = idx(1);
-    hum_endT(i) = idx(end);
-    idxi = idx(1):1:idx(end);
-    hum_phase_o = interp1(idx, phase_unwrap, idxi, 'spline');
-    hum_phase(idxi, i) = hum_phase_o';
-end
+[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = SubsetD(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
+[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = SubsetD(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
-[
+delta_T = zeros(humSIZE, objSIZE);
+delta_phase = zeros(humSIZE, objSIZE);
+delta_rssi = zeros(humSIZE, objSIZE);
 
-for i=1:objSIZE
-    obj_idx(:,i) = ismember(rawEPC, objID(i));
-    idx = find(obj_idx(:,i));
-    phase_unwrap = Unwrapping(rawphase(idx), size(rawphase(idx,1)));
-    obj_firstT(i) = idx(1);
-    obj_endT(i) = idx(end);
-    idxi = idx(1):1:idx(end);
-    obj_phase_o = interp1(idx, phase_unwrap, idxi, 'spline');
-    obj_phase(idxi, i) = obj_phase_o';
+for i = 1:humSIZE
+    for j = 1:objSIZE
+        delta_T(i, j) = abs(hum_firstT(i) - obj_firstT(j)) +  abs(hum_endT(i) - obj_endT(j));
+        s_first = max(hum_firstT(i), obj_firstT(j));
+        s_end = min(hum_endT(i), obj_endT(j));
+        if (s_first > s_end)
+            delta_phase(i, j) = inf;
+            delta_rssi(i, j) = inf;
+        else
+            for k = s_first:s_end - 1
+                dif_hum = hum_phase(i, k) - hum_phase(i, k + 1);
+                dif_obj = _phase(i, k) - hum_phase(i, k + 1);
+                delta_rssi(i, j) = delta_rssi(i, j) + abs(hum_rssi(i, k) - obj_rssi(j, k));
+            end
+            for k = s_first:s_end
+                delta_rssi(i, j) = delta_rssi(i, j) + abs(hum_rssi(i, k) - obj_rssi(j, k));
+            end
+        end
+    end
 end

@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./phase_2mov_8sec4.csv');
+rawdata = readtable('./phase_2movd_8sec2.csv');
 
 EPC = split(string(rawdata.EPC(:)));
 time = str2double(rawdata.Timestamp(:));
@@ -27,8 +27,7 @@ phasecor = (phase ./ freq) .* centerfreq;
 
 [rawEPC, rawphase, rawrssi, rawSIZE] = AddBlank(time, EPC, phasecor, rssi, rawdataSIZE);
 
+[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = FillBlank(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
+[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = FillBlank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
-[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = SubsetD(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
-
-[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = SubsetD(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
-
+[delta_T, delta_phase, delta_rssi] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
