@@ -1,0 +1,61 @@
+clear; clc;
+
+rawdata = readtable('./phase_2mov_8sec4.csv');
+
+EPC = split(string(rawdata.EPC(:)));
+time = str2double(rawdata.Timestamp(:));
+freq = str2double(rawdata.ChannelInMhz(:));
+rssi = str2double(rawdata.PeakRssiInDbm(:));
+phase = str2double(rawdata.PhaseAngleInRadians(:));
+
+time = time - time(1);
+
+%%EPC = split(EPC);
+EPC = EPC(:,6);
+rawdataSIZE = size(EPC);
+rawdataSIZE = rawdataSIZE(1);
+
+centerfreq = 925.0;
+humID = {'BC48'};
+objID = {'BE05'};
+humSIZE = size(humID);
+humSIZE = humSIZE(2);
+objSIZE = size(objID);
+objSIZE = objSIZE(2);
+
+phasecor = (phase ./ freq) .* centerfreq;
+
+[rawEPC, rawphase, rawrssi, rawSIZE] = AddBlank(time, EPC, phasecor, rssi, rawdataSIZE);
+
+hum_phase = zeros(rawSIZE, humSIZE);
+obj_phase = zeros(rawSIZE, objSIZE);
+hum_idx = zeros(rawSIZE, humSIZE);
+obj_idx = zeros(rawSIZE, objSIZE);
+hum_firstT = zeros(humSIZE, 1);
+hum_endT = zeros(humSIZE, 1);
+obj_firstT = zeros(objSIZE, 1);
+obj_endT = zeros(objSIZE, 1);
+
+for i=1:humSIZE
+    hum_idx(:,i) = ismember(rawEPC, humID(i));
+    idx = find(hum_idx(:,i));
+    phase_unwrap = Unwrapping(rawphase(idx), size(rawphase(idx,1)));
+    hum_firstT(i) = idx(1);
+    hum_endT(i) = idx(end);
+    idxi = idx(1):1:idx(end);
+    hum_phase_o = interp1(idx, phase_unwrap, idxi, 'spline');
+    hum_phase(idxi, i) = hum_phase_o';
+end
+
+[
+
+for i=1:objSIZE
+    obj_idx(:,i) = ismember(rawEPC, objID(i));
+    idx = find(obj_idx(:,i));
+    phase_unwrap = Unwrapping(rawphase(idx), size(rawphase(idx,1)));
+    obj_firstT(i) = idx(1);
+    obj_endT(i) = idx(end);
+    idxi = idx(1):1:idx(end);
+    obj_phase_o = interp1(idx, phase_unwrap, idxi, 'spline');
+    obj_phase(idxi, i) = obj_phase_o';
+end
