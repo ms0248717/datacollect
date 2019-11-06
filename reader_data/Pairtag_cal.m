@@ -1,8 +1,8 @@
 clear; clc;
 
-rawdata = readtable('./phase_2movd_8sec2.csv');
+rawdata = readtable('./BD9EBD9D_BDEFBE00_2.csv');
 
-EPC = split(string(rawdata.EPC(:)));
+EPC = split(string(rawdata.x___EPC_(:)));
 time = str2double(rawdata.Timestamp(:));
 freq = str2double(rawdata.ChannelInMhz(:));
 rssi = str2double(rawdata.PeakRssiInDbm(:));
@@ -15,9 +15,12 @@ EPC = EPC(:,6);
 rawdataSIZE = size(EPC);
 rawdataSIZE = rawdataSIZE(1);
 
+alpha = 0.1;
+beta = 5;
+gamma = 2;
 centerfreq = 925.0;
-humID = {'BC48'};
-objID = {'BE05'};
+humID = {'BD9E', 'BD9D'};
+objID = {'BDEF', 'BE00'};
 humSIZE = size(humID);
 humSIZE = humSIZE(2);
 objSIZE = size(objID);
@@ -31,3 +34,5 @@ phasecor = (phase ./ freq) .* centerfreq;
 [obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = FillBlank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
 [delta_T, delta_phase, delta_rssi] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
+
+deltaD = delta_T .* alpha + delta_phase .* beta + delta_rssi .* gamma
