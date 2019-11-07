@@ -1,9 +1,9 @@
 clear; clc;
 
-rawdata = readtable('./BD9EBD9D_BDEFBE00_2.csv');
+rawdata = readtable('./BD9EBD9D_BDEFBE00_5.csv');
 
-%EPC = split(string(rawdata.x___EPC_(:)));
-EPC = split(string(rawdata.EPC(:)));
+EPC = split(string(rawdata.x___EPC_(:)));
+%EPC = split(string(rawdata.EPC(:)));
 time = str2double(rawdata.Timestamp(:));
 freq = str2double(rawdata.ChannelInMhz(:));
 rssi = str2double(rawdata.PeakRssiInDbm(:));
@@ -16,13 +16,14 @@ EPC = EPC(:,6);
 rawdataSIZE = size(EPC);
 rawdataSIZE = rawdataSIZE(1);
 
-alpha = 0.1;
-beta = 5;
-gamma = 2;
+alpha = 1;
+beta = 0.1;
+gamma = 0.02;
 centerfreq = 925.0;
 humID = {'BD9E', 'BD9D'};
 %humID = {'BD9E'};
 objID = {'BDEF', 'BE00'};
+%objID = {'BDEF'};
 humSIZE = size(humID);
 humSIZE = humSIZE(2);
 objSIZE = size(objID);
@@ -51,6 +52,7 @@ for i = 1:objSIZE
     idx_n = find(obj_idx(:,i));
     plot(idx_n, obj_phase(idx_n, i),'*', 'DisplayName', ['obj ',num2str(i)]);
 end
+hold off;
 legend;
 xlabel('Sample')
 ylabel('Phase(^o)')
@@ -64,8 +66,21 @@ end
 for i = 1:objSIZE
     plot(obj_rssi(:, i), 'DisplayName', ['obj ',num2str(i)]);
 end
+hold off;
 legend;
 xlabel('Sample')
 ylabel('rssi(dB)')
 title('RSSI');
+
+OUTPUT = true;
+if OUTPUT
+    collect_sec = 8.0;
+    [name, phasedata, rssidata] = OutputMLData(collect_sec, rawSIZE, humSIZE, hum_firstT, hum_endT, hum_phase, hum_rssi, objSIZE, obj_firstT, obj_endT, obj_phase, obj_rssi);
+    
+    %write data file
+    csvwrite('./ML_realdata/phase.csv', name);
+    dlmwrite('./ML_realdata/phase.csv', phasedata, '-append');
+    csvwrite('./ML_realdata/rssi.csv', name);
+    dlmwrite('./ML_realdata/rssi.csv', rssidata, '-append');
+end
 
