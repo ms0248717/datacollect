@@ -1,7 +1,8 @@
 clear; clc;
 
-rawdata = readtable('./phase_2mov_8sec4.csv');
+rawdata = readtable('./BD9EBD9D_BDEFBE00_2.csv');
 
+%EPC = split(string(rawdata.x___EPC_(:)));
 EPC = split(string(rawdata.EPC(:)));
 time = str2double(rawdata.Timestamp(:));
 freq = str2double(rawdata.ChannelInMhz(:));
@@ -15,9 +16,12 @@ EPC = EPC(:,6);
 rawdataSIZE = size(EPC);
 rawdataSIZE = rawdataSIZE(1);
 
+alpha = 0.1;
+beta = 5;
+gamma = 2;
 centerfreq = 925.0;
-humID = {'BC48'};
-objID = {'BE05'};
+humID = {'BD9E', 'BD9D'};
+objID = {'BDEF', 'BE00'};
 humSIZE = size(humID);
 humSIZE = humSIZE(2);
 objSIZE = size(objID);
@@ -27,31 +31,27 @@ phasecor = (phase ./ freq) .* centerfreq;
 
 [rawEPC, rawphase, rawrssi, rawSIZE] = AddBlank(time, EPC, phasecor, rssi, rawdataSIZE);
 
+[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = FillBlank(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
+[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = FillBlank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
-[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = SubsetD(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
-[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = SubsetD(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
+[delta_T, delta_phase, delta_rssi] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
 
-delta_T = zeros(humSIZE, objSIZE);
-delta_phase = zeros(humSIZE, objSIZE);
-delta_rssi = zeros(humSIZE, objSIZE);
+deltaD = delta_T .* alpha + delta_phase .* beta + delta_rssi .* gamma
 
+figure;
 for i = 1:humSIZE
-    for j = 1:objSIZE
-        delta_T(i, j) = abs(hum_firstT(i) - obj_firstT(j)) +  abs(hum_endT(i) - obj_endT(j));
-        s_first = max(hum_firstT(i), obj_firstT(j));
-        s_end = min(hum_endT(i), obj_endT(j));
-        if (s_first > s_end)
-            delta_phase(i, j) = inf;
-            delta_rssi(i, j) = inf;
-        else
-            for k = s_first:s_end - 1
-                dif_hum = hum_phase(i, k) - hum_phase(i, k + 1);
-                dif_obj = _phase(i, k) - hum_phase(i, k + 1);
-                delta_rssi(i, j) = delta_rssi(i, j) + abs(hum_rssi(i, k) - obj_rssi(j, k));
-            end
-            for k = s_first:s_end
-                delta_rssi(i, j) = delta_rssi(i, j) + abs(hum_rssi(i, k) - obj_rssi(j, k));
-            end
-        end
-    end
+        plot(hum_phase()
 end
+plot(Tx, Ty, Tz, '*')
+hold on;
+plot3(0, 0, 3, 'o');
+legend('Trajectory','Reader')
+hold off;
+
+figure;
+plot(phase, '*')
+xlabel('Sample')
+ylabel('Phase(^o)')
+title('Theoretical Phase')
+grid on;
+axis([-inf, inf, 0, 2*pi]);
