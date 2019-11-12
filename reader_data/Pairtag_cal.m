@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./BD9EBD9D_BDEFBE00_6.csv');
+rawdata = readtable('./BD9E_BDEFBE00_4.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -18,11 +18,11 @@ rawdataSIZE = rawdataSIZE(1);
 
 %Parameter definition
 alpha = 1;
-beta = 50;
+beta = 2;
 gamma = 20;
 centerfreq = 925.0;
 humID = {'BD9E', 'BD9D'};
-%humID = {'BD9E'};
+humID = {'BD9E'};
 objID = {'BDEF', 'BE00'};
 %objID = {'BDEF'};
 humSIZE = size(humID);
@@ -41,11 +41,21 @@ phasecor = (phase ./ freq) .* centerfreq;
 [obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = FillBlank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
 %Calculate the subset of D
-[delta_T, delta_phase, delta_rssi] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
+[delta_T, delta_phase, delta_rssi, dtw_phase] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
 
 %D = alpha * D_T + beta * D_phase + gamma * D_rssi
-deltaD = delta_T .* alpha + delta_phase .* beta + delta_rssi .* gamma
+deltaD = delta_T .* alpha + dtw_phase .* beta + delta_rssi .* gamma
 
+%Pairing result
+fprintf('Pairing result:\n');
+for i = 1:humSIZE
+    minD = min(deltaD(:));
+    [row,col] = find(deltaD==minD);
+    fprintf('    hum %d <==> obj %d\n', col, row);
+    deltaD(row, :) = Inf;
+    deltaD(:, col) = Inf;
+end
+return;
 %Plot
 figure;
 for i = 1:humSIZE

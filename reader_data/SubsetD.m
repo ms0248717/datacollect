@@ -1,7 +1,8 @@
-function [delta_T, delta_phase, delta_rssi] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
+function [delta_T, delta_phase, delta_rssi, dtw_phase] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
     delta_T = zeros(humSIZE, objSIZE);
     delta_phase = zeros(humSIZE, objSIZE);
     delta_rssi = zeros(humSIZE, objSIZE);
+    dtw_phase = zeros(humSIZE, objSIZE);
 
     for i = 1:humSIZE
         for j = 1:objSIZE
@@ -23,6 +24,19 @@ function [delta_T, delta_phase, delta_rssi] = SubsetD(humSIZE, objSIZE, hum_phas
                 end
                 delta_phase(i, j) = delta_phase(i, j) / (s_end - s_first);
                 delta_rssi(i, j) = delta_rssi(i, j) / (s_end - s_first + 1);
+                
+                %%DTW
+                max_dif = max(hum_phase(s_first: s_end, i) - obj_phase(s_first: s_end, j));
+                min_dif = min(hum_phase(s_first: s_end, i) - obj_phase(s_first: s_end, j));
+                for k = min_dif:0.1:max_dif
+                    dtw_p = dtw(hum_phase(s_first: s_end, i), obj_phase(s_first: s_end, j) + k);
+                    if(k == min_dif)
+                        min_dtw = dtw_p;
+                    elseif(min_dtw > dtw_p)
+                        min_dtw = dtw_p;
+                    end
+                end
+                dtw_phase(i ,j) = min_dtw / (s_end - s_first + 1);
             end
         end
     end
