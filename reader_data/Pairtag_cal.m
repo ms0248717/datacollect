@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./BD9E_BDEFBE00_4.csv');
+rawdata = readtable('./BD9E_BDEFBE00_2.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -55,7 +55,7 @@ for i = 1:humSIZE
     deltaD(row, :) = Inf;
     deltaD(:, col) = Inf;
 end
-return;
+
 %Plot
 figure;
 for i = 1:humSIZE
@@ -90,7 +90,7 @@ ylabel('rssi(dB)')
 title('RSSI');
 
 %output data 150 samples of phase and rssi 
-OUTPUT = false;
+OUTPUT = true;
 if OUTPUT
     collect_sec = 8.0;
     [hum_name, hum_phasedata, hum_rssidata] = OutputMLData(collect_sec, rawSIZE, humSIZE, hum_firstT, hum_endT, hum_phase, hum_rssi, 'hum');

@@ -6,6 +6,7 @@ function [name, phasedata, rssidata] = OutputMLData(collect_sec, rawSIZE, SIZE, 
     outputSIZE = 150;
     sampleSIZE = round((rawSIZE * take_sec / collect_sec) / outputSIZE);
     takeSIZE = sampleSIZE * outputSIZE;
+    V = zeros(1, rawSIZE-takeSIZE);
     for i = 1:SIZE
         if (endT(i) - firstT(i) > takeSIZE)
             phase_take = phase(endT(i) - takeSIZE + 1: endT(i), i);
@@ -17,6 +18,10 @@ function [name, phasedata, rssidata] = OutputMLData(collect_sec, rawSIZE, SIZE, 
             phasedata = [phasedata output_phase];
             rssidata = [rssidata output_rssi];
             name = [name i];
+            %var_cal
+            for j=firstT(i):endT(i)-takeSIZE
+                V(j) = var(phase(j:j+takeSIZE, i));
+            end
         else
             fprintf('%s %d dont have enough data.\n',strn, i);
         end
