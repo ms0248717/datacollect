@@ -25,6 +25,8 @@ humID = {'BD9E', 'BD9D'};
 %humID = {'BD9E'};
 objID = {'BDEF', 'BE00'};
 %objID = {'BDEF'};
+OUTPUT = true;
+FIGURE = true;
 humSIZE = size(humID);
 humSIZE = humSIZE(2);
 objSIZE = size(objID);
@@ -34,14 +36,14 @@ objSIZE = objSIZE(2);
 phasecor = (phase ./ freq) .* centerfreq;
 
 %Add blank by min delta T
-[rawEPC, rawphase, rawrssi, rawSIZE] = AddBlank(time, EPC, phasecor, rssi, rawdataSIZE);
+[rawEPC, rawphase, rawrssi, rawSIZE] = add_blank(time, EPC, phasecor, rssi, rawdataSIZE);
 
 %Unwrapping phase and filling the blank by interpolation
-[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = FillBlank(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
-[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = FillBlank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
+[hum_phase, hum_rssi ,hum_firstT, hum_endT, hum_idx] = fill_blank(rawEPC, rawphase, rawrssi, humID, humSIZE, rawSIZE);
+[obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = fill_blank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
 %Calculate the subset of D
-[delta_T, delta_phase, delta_rssi, dtw_phase] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
+[delta_T, delta_phase, delta_rssi, dtw_phase] = subset_D(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
 
 %D = alpha * D_T + beta * D_phase + gamma * D_rssi
 deltaD = delta_T .* alpha + dtw_phase .* beta + delta_rssi .* gamma
@@ -57,44 +59,45 @@ for i = 1:humSIZE
 end
 
 %Plot
-figure;
-for i = 1:humSIZE
-    plot(hum_phase(:, i), 'DisplayName', ['hum ',num2str(i)]);
-    hold on;
-    idx_n = find(hum_idx(:,i));
-    plot(idx_n, hum_phase(idx_n, i),'*', 'DisplayName', ['hum ',num2str(i)]);
-end
-for i = 1:objSIZE
-    plot(obj_phase(:, i), 'DisplayName', ['obj ',num2str(i)]);
-    idx_n = find(obj_idx(:,i));
-    plot(idx_n, obj_phase(idx_n, i),'*', 'DisplayName', ['obj ',num2str(i)]);
-end
-hold off;
-legend;
-xlabel('Sample')
-ylabel('Phase(^o)')
-title('Phase');
+if FIGURE
+    figure;
+    for i = 1:humSIZE
+        plot(hum_phase(:, i), 'DisplayName', ['hum ',num2str(i)]);
+        hold on;
+        idx_n = find(hum_idx(:,i));
+        plot(idx_n, hum_phase(idx_n, i),'*', 'DisplayName', ['hum ',num2str(i)]);
+    end
+    for i = 1:objSIZE
+        plot(obj_phase(:, i), 'DisplayName', ['obj ',num2str(i)]);
+        idx_n = find(obj_idx(:,i));
+        plot(idx_n, obj_phase(idx_n, i),'*', 'DisplayName', ['obj ',num2str(i)]);
+    end
+    hold off;
+    legend;
+    xlabel('Sample')
+    ylabel('Phase(^o)')
+    title('Phase');
 
-figure;
-for i = 1:humSIZE
-    plot(hum_rssi(:, i), 'DisplayName', ['hum ',num2str(i)]);
-    hold on;
+    figure;
+    for i = 1:humSIZE
+        plot(hum_rssi(:, i), 'DisplayName', ['hum ',num2str(i)]);
+        hold on;
+    end
+    for i = 1:objSIZE
+        plot(obj_rssi(:, i), 'DisplayName', ['obj ',num2str(i)]);
+    end
+    hold off;
+    legend;
+    xlabel('Sample')
+    ylabel('rssi(dB)')
+    title('RSSI');
 end
-for i = 1:objSIZE
-    plot(obj_rssi(:, i), 'DisplayName', ['obj ',num2str(i)]);
-end
-hold off;
-legend;
-xlabel('Sample')
-ylabel('rssi(dB)')
-title('RSSI');
 
 %output data 150 samples of phase and rssi 
-OUTPUT = true;
 if OUTPUT
     collect_sec = 8.0;
-    [hum_name, hum_phasedata, hum_rssidata] = OutputMLData(collect_sec, rawSIZE, humSIZE, hum_firstT, hum_endT, hum_phase, hum_rssi, 'hum');
-    [obj_name, obj_phasedata, obj_rssidata] = OutputMLData(collect_sec, rawSIZE, objSIZE, obj_firstT, obj_endT, obj_phase, obj_rssi, 'obj');
+    [hum_name, hum_phasedata, hum_rssidata] = output_ML_data(collect_sec, rawSIZE, humSIZE, hum_firstT, hum_endT, hum_phase, hum_rssi, 'hum');
+    [obj_name, obj_phasedata, obj_rssidata] = output_ML_data(collect_sec, rawSIZE, objSIZE, obj_firstT, obj_endT, obj_phase, obj_rssi, 'obj');
 
     %write data file
     csvwrite('./ML_realdata/hum_phase.csv', hum_name);

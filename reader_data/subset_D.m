@@ -1,4 +1,4 @@
-function [delta_T, delta_phase, delta_rssi, dtw_phase] = SubsetD(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
+function [delta_T, delta_phase, delta_rssi, dtw_phase] = subset_D(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
     delta_T = zeros(humSIZE, objSIZE);
     delta_phase = zeros(humSIZE, objSIZE);
     delta_rssi = zeros(humSIZE, objSIZE);

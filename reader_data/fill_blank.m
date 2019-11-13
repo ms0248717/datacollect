@@ -1,4 +1,4 @@
-function [phase, rssi ,firstT, endT, idx] = FillBlank(rawEPC, rawphase, rawrssi, ID, SIZE, rawSIZE)
+function [phase, rssi ,firstT, endT, idx] = fill_blank(rawEPC, rawphase, rawrssi, ID, SIZE, rawSIZE)
 
     phase = zeros(rawSIZE, SIZE);
     rssi = zeros(rawSIZE, SIZE);
@@ -10,7 +10,7 @@ function [phase, rssi ,firstT, endT, idx] = FillBlank(rawEPC, rawphase, rawrssi,
         idx(:,i) = ismember(rawEPC, ID(i));
         idx_n = find(idx(:,i));
         %Unwrapping the phase
-        phase_unwrap = Unwrapping(rawphase(idx_n), size(rawphase(idx_n,1)));
+        phase_unwrap = unwrapping(rawphase(idx_n), size(rawphase(idx_n,1)));
         hum_rssi_seq = rawrssi(idx_n);
         firstT(i) = idx_n(1);
         endT(i) = idx_n(end);

@@ -1,4 +1,4 @@
-function [name, phasedata, rssidata] = OutputMLData(collect_sec, rawSIZE, SIZE, firstT, endT, phase, rssi, strn);
+function [name, phasedata, rssidata] = output_ML_data(collect_sec, rawSIZE, SIZE, firstT, endT, phase, rssi, strn);
     name = [];
     phasedata = [];
     rssidata = [];

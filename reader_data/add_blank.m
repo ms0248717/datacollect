@@ -1,4 +1,4 @@
-function [rawEPC, rawphase, rawrssi, rawSIZE] = AddBlank(time, EPC, phasecor, rssi, rawdataSIZE)
+function [rawEPC, rawphase, rawrssi, rawSIZE] = add_blank(time, EPC, phasecor, rssi, rawdataSIZE)
 
     delta_time = zeros(rawdataSIZE-1,1);
     for i=1:rawdataSIZE-1
