@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./BD9E_BDEFBE00_2.csv');
+rawdata = readtable('./BD9EBD9D_BDEFBE00_3.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -22,7 +22,7 @@ beta = 2;
 gamma = 20;
 centerfreq = 925.0;
 humID = {'BD9E', 'BD9D'};
-humID = {'BD9E'};
+%humID = {'BD9E'};
 objID = {'BDEF', 'BE00'};
 %objID = {'BDEF'};
 humSIZE = size(humID);
