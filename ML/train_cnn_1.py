@@ -171,7 +171,7 @@ callbacks_list = [
     keras.callbacks.ModelCheckpoint(
         filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
         monitor='val_loss', save_best_only=True),
-    keras.callbacks.EarlyStopping(monitor='acc', patience=1)
+    #keras.callbacks.EarlyStopping(monitor='acc', patience=1)
 ]
 
 model_m.compile(loss='categorical_crossentropy',

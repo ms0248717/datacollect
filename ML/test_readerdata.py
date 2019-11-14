@@ -66,7 +66,7 @@ x_test = x_test.reshape(x_test.shape[0], input_shape)
 
 x_test = x_test.astype("float32")
 
-model = load_model('./bestmodel/C5_2.h5')
+model = load_model('./bestmodel/C5_4.h5')
 print('test after load: ', model.predict(x_test))
 y_pred_test = model.predict(x_test)
 # Take the class with the highest probability from the test predictions
