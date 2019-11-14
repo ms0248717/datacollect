@@ -61,6 +61,7 @@ for i=1:trainsize
     
 end
 
+
 %write train data file
 csvwrite('./ML_data/train_label.csv', name);
 dlmwrite('./ML_data/train_label.csv', train_label, '-append');
@@ -90,7 +91,6 @@ for i=1:testsize
     test_rssidata = [test_rssidata RSSI];
     name = [name i];
 end
-
 
 
 %write test data file
