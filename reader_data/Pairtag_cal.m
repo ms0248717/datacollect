@@ -1,10 +1,10 @@
 clear; clc;
 
-rawdata = readtable('./BD9EBD9D_BDEFBE00_3.csv');
+rawdata = readtable('./3tag_BD9EBDEF_6.csv');
 
 %load data
-%EPC = split(string(rawdata.x___EPC_(:)));
-EPC = split(string(rawdata.EPC(:)));
+EPC = split(string(rawdata.x___EPC_(:)));
+%EPC = split(string(rawdata.EPC(:)));
 time = str2double(rawdata.Timestamp(:));
 freq = str2double(rawdata.ChannelInMhz(:));
 rssi = str2double(rawdata.PeakRssiInDbm(:));
@@ -21,11 +21,11 @@ alpha = 1;
 beta = 2;
 gamma = 20;
 centerfreq = 925.0;
-humID = {'BD9E', 'BD9D'};
-%humID = {'BD9E'};
-objID = {'BDEF', 'BE00'};
+%humID = {'BD9E', 'BD9D'};
+humID = {'BD9E'};
+objID = {'BDEF', 'BE00', 'BD9D'};
 %objID = {'BDEF'};
-OUTPUT = true;
+OUTPUT = false;
 FIGURE = true;
 humSIZE = size(humID);
 humSIZE = humSIZE(2);
@@ -43,17 +43,17 @@ phasecor = (phase ./ freq) .* centerfreq;
 [obj_phase, obj_rssi ,obj_firstT, obj_endT, obj_idx] = fill_blank(rawEPC, rawphase, rawrssi, objID, objSIZE, rawSIZE);
 
 %Calculate the subset of D
-[delta_T, delta_phase, delta_rssi, dtw_phase] = subset_D(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
+[delta_T, delta_phase, delta_rssi, dtw_phase, dtw_rssi] = subset_D(humSIZE, objSIZE, hum_phase, obj_phase, hum_rssi, obj_rssi, hum_firstT, obj_firstT, hum_endT, obj_endT);
 
 %D = alpha * D_T + beta * D_phase + gamma * D_rssi
-deltaD = delta_T .* alpha + dtw_phase .* beta + delta_rssi .* gamma
+deltaD = delta_T .* alpha + dtw_phase .* beta + dtw_rssi .* gamma
 
 %Pairing result
 fprintf('Pairing result:\n');
 for i = 1:humSIZE
     minD = min(deltaD(:));
     [row,col] = find(deltaD==minD);
-    fprintf('    hum %d <==> obj %d\n', col, row);
+    fprintf('    hum %d <==> obj %d\n', row, col);
     deltaD(row, :) = Inf;
     deltaD(:, col) = Inf;
 end
