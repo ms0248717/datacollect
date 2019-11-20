@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./3tag_BD9EBDEF_6.csv');
+rawdata = readtable('./test.csv');
 
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
@@ -17,16 +17,17 @@ rawdataSIZE = size(EPC);
 rawdataSIZE = rawdataSIZE(1);
 
 %Parameter definition
-alpha = 1;
+alpha = 0.3;
 beta = 2;
-gamma = 20;
+gamma = 30;
 centerfreq = 925.0;
 %humID = {'BD9E', 'BD9D'};
-humID = {'BD9E'};
-objID = {'BDEF', 'BE00', 'BD9D'};
+humID = {'BDEF'};
+objID = {'BD9E', 'BE00', 'BD9D', 'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E', 'BDB0', 'BD95', 'BDAF', 'BD55', 'BD5D'};
+%objID = {'BD9E', 'BE00'};
 %objID = {'BDEF'};
 OUTPUT = false;
-FIGURE = true;
+FIGURE = false;
 humSIZE = size(humID);
 humSIZE = humSIZE(2);
 objSIZE = size(objID);
