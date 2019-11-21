@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./BD9EBD9D_BDEFBE00_3.csv');
+rawdata = readtable('./square_2.csv');
 
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
@@ -18,11 +18,11 @@ rawdataSIZE = rawdataSIZE(1);
 
 %Parameter definition
 centerfreq = 925.0;
-ID = {'BD9E', 'BD9D'};
+ID = {'BD9E', 'BDEF'};
 SIZE = size(ID);
 SIZE = SIZE(2);
 OUTPUT = true;
-FIGURE = true;
+FIGURE = false;
 
 %Calibration to center freq
 phasecor = (phase ./ freq) .* centerfreq;

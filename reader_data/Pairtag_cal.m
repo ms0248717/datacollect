@@ -1,10 +1,10 @@
 clear; clc;
 
-rawdata = readtable('./6tag_BDEFBD9E_10.csv');
+rawdata = readtable('./test.csv');
 
 %load data
-%EPC = split(string(rawdata.x___EPC_(:)));
-EPC = split(string(rawdata.EPC(:)));
+EPC = split(string(rawdata.x___EPC_(:)));
+%EPC = split(string(rawdata.EPC(:)));
 time = str2double(rawdata.Timestamp(:));
 freq = str2double(rawdata.ChannelInMhz(:));
 rssi = str2double(rawdata.PeakRssiInDbm(:));
@@ -24,7 +24,7 @@ centerfreq = 925.0;
 %humID = {'BD9E', 'BD9D'};
 humID = {'BDEF'};
 objID = {'BD9E', 'BE00', 'BD9D', 'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E', 'BDB0', 'BD95', 'BDAF', 'BD55', 'BD5D'};
-objID = {'BD9E', 'BE00', 'BD9D', 'BD75', 'BD96', 'BD57'};
+objID = {'BD9E', 'BE00', 'BD9D', 'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E'};
 %objID = {'BDEF'};
 OUTPUT = false;
 FIGURE = false;
