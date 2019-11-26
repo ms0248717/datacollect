@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./square_2.csv');
+rawdata = readtable('./still_2.csv');
 
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
