@@ -50,7 +50,7 @@ weight_save = 0
 model_save = 0
 store = 1
 high_acc = 0
-LABELS = ["right","shake","square","circle","still"]
+LABELS = ["line","shake","square","circle","still"]
 
 trainlabel = read_data('../ML_data/train_label.csv')
 trainphase = read_data('../ML_data/train_phase.csv')

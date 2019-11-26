@@ -12,7 +12,7 @@ function [xT, yT, zT] = TranslationData(dx, dy, dz)
     %Translation data
     randTx = 2 - (rand * 4);
     randTy = 2 - (rand * 4);
-    randTz = 0.5 - (rand * 1);
+    randTz = 1 - (rand * 2);
     xT = xR + randTx;
     yT = yR + randTy;
     zT = zR + randTz + 1.5;

@@ -1,10 +1,11 @@
 clear; clc;
 
-rawdata = readtable('./square_2.csv');
-
+rawdata = readtable('./line_1.csv');
+outputphase = './ML_realdata/phase_line_0_50_1.csv';
+outputrssi = './ML_realdata/rssi_line_0_50_1.csv';
 %load data
-EPC = split(string(rawdata.x___EPC_(:)));
-%EPC = split(string(rawdata.EPC(:)));
+%EPC = split(string(rawdata.x___EPC_(:)));
+EPC = split(string(rawdata.EPC(:)));
 time = str2double(rawdata.Timestamp(:));
 freq = str2double(rawdata.ChannelInMhz(:));
 rssi = str2double(rawdata.PeakRssiInDbm(:));
@@ -66,8 +67,8 @@ if OUTPUT
     [name, phasedata, rssidata] = output_ML_data(collect_sec, rawSIZE, SIZE, firstT, endT, phase, rssi, 'tag');
     
     %write data file
-    csvwrite('./ML_realdata/phase.csv', name);
-    dlmwrite('./ML_realdata/phase.csv', phasedata, '-append');
-    csvwrite('./ML_realdata/rssi.csv', name);
-    dlmwrite('./ML_realdata/rssi.csv', rssidata, '-append');
+    csvwrite(outputphase, name);
+    dlmwrite(outputphase, phasedata, '-append');
+    csvwrite(outputrssi, name);
+    dlmwrite(outputrssi, rssidata, '-append');
 end
