@@ -22,6 +22,7 @@ function [name, phasedata, rssidata] = output_ML_data(collect_sec, rawSIZE, SIZE
             plot(output_phase, '*');
             figure;
             plot(output_rssi, 'o');
+            
             %var_cal
             for j=firstT(i):endT(i)-takeSIZE
                 V(j) = var(phase(j:j+takeSIZE, i));

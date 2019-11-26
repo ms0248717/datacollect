@@ -6,6 +6,9 @@ function [rawEPC, rawphase, rawrssi, rawSIZE] = add_blank(time, EPC, phasecor, r
     end
     %min delta_T
     min_d_time = min(delta_time);
+    while(min_d_time > 15000)
+        min_d_time = min_d_time / 2;
+    end
     delta_time = floor(delta_time ./ min_d_time);
     rawSIZE = sum(delta_time) + 1;
 

@@ -1,6 +1,8 @@
 clear; clc;
 
-rawdata = readtable('./still_2.csv');
+rawdata = readtable('./square_0_50_1.csv');
+outputphase = './ML_realdata/phase_square_0_50_1.csv';
+outputrssi = './ML_realdata/rssi_square_0_50_1.csv';
 
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
@@ -18,7 +20,7 @@ rawdataSIZE = rawdataSIZE(1);
 
 %Parameter definition
 centerfreq = 925.0;
-ID = {'BD9E', 'BDEF'};
+ID = {'BDEF'};
 SIZE = size(ID);
 SIZE = SIZE(2);
 OUTPUT = true;
@@ -66,8 +68,8 @@ if OUTPUT
     [name, phasedata, rssidata] = output_ML_data(collect_sec, rawSIZE, SIZE, firstT, endT, phase, rssi, 'tag');
     
     %write data file
-    csvwrite('./ML_realdata/phase.csv', name);
-    dlmwrite('./ML_realdata/phase.csv', phasedata, '-append');
-    csvwrite('./ML_realdata/rssi.csv', name);
-    dlmwrite('./ML_realdata/rssi.csv', rssidata, '-append');
+    csvwrite(outputphase, name);
+    dlmwrite(outputphase, phasedata, '-append');
+    csvwrite(outputrssi, name);
+    dlmwrite(outputrssi, rssidata, '-append');
 end

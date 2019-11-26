@@ -38,8 +38,8 @@ motions = [rights shakes squares circles still];
 %train data
 typesize = 5;
 trainsize = 4000;
-phase_noise = 10;
-rssi_noise = 20;
+phase_noise = 15;
+rssi_noise = 30;
 name = [];
 train_phasedata = [];
 train_rssidata = [];
@@ -60,6 +60,19 @@ for i=1:trainsize
     name = [name i];
     
 end
+%
+%{
+figure;
+plot(phase_o);
+hold on;
+plot(phase,'*');
+hold off;
+figure;
+plot(RSSI_o);
+hold on;
+plot(RSSI,'*');
+return;
+%}
 
 
 %write train data file
