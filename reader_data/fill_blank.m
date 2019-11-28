@@ -1,4 +1,4 @@
-function [phase, rssi ,firstT, endT, idx] = fill_blank(rawEPC, rawphase, rawrssi, ID, SIZE, rawSIZE)
+function [phase, rssi, firstT, endT, idx] = fill_blank(rawEPC, rawphase, rawrssi, ID, SIZE, rawSIZE)
 
     phase = zeros(rawSIZE, SIZE);
     rssi = zeros(rawSIZE, SIZE);
@@ -11,15 +11,15 @@ function [phase, rssi ,firstT, endT, idx] = fill_blank(rawEPC, rawphase, rawrssi
         idx_n = find(idx(:,i));
         %Unwrapping the phase
         phase_unwrap = unwrapping(rawphase(idx_n), size(rawphase(idx_n,1)));
-        hum_rssi_seq = rawrssi(idx_n);
+        rssi_seq = rawrssi(idx_n);
         firstT(i) = idx_n(1);
         endT(i) = idx_n(end);
         idxi = idx_n(1):1:idx_n(end);
         %interpolate the phase and rssi (linear, spline)
-        hum_phase_o = interp1(idx_n, phase_unwrap, idxi, 'linear');
-        hum_rssi_o = interp1(idx_n, hum_rssi_seq, idxi, 'linear');
-        phase(idxi, i) = hum_phase_o';
-        rssi(idxi, i) = hum_rssi_o';
+        phase_o = interp1(idx_n, phase_unwrap, idxi, 'linear');
+        rssi_o = interp1(idx_n, rssi_seq, idxi, 'linear');
+        phase(idxi, i) = phase_o';
+        rssi(idxi, i) = rssi_o';
     end
 
 end

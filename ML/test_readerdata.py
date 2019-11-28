@@ -30,13 +30,14 @@ def read_data(file_path):
 
 LABELS = ["line","shake","square","circle","still"]
 
-for j in range(1 ,6):
+for j in range(1 ,11):
 
-    phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
-    rssi = read_data('../reader_data/ML_realdata/rssi_still_0_50_' + str(j) + '.csv')
+    phase = read_data('../reader_data/ML_realdata/phase_circle_0_50_' + str(j) + '.csv')
+    rssi = read_data('../reader_data/ML_realdata/rssi_circle_0_50_' + str(j) + '.csv')
 
     X_phase = np.asarray(phase, dtype= np.float32)
     X_rssi = np.asarray(rssi, dtype= np.float32)
+
 
     X_phase = feature_normalize(X_phase)
     X_rssi = feature_normalize(X_rssi)
@@ -71,7 +72,7 @@ for j in range(1 ,6):
 
     x_test = x_test.astype("float32")
 
-    model = load_model('./bestmodel/C5_8.h5')
+    model = load_model('./bestmodel/C5_20.h5')
     # print('test after load: ', model.predict(x_test))
     y_pred_test = model.predict(x_test)
     # Take the class with the highest probability from the test predictions

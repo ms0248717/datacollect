@@ -55,30 +55,38 @@ LABELS = ["line","shake","square","circle","still"]
 trainlabel = read_data('../ML_data/train_label.csv')
 trainphase = read_data('../ML_data/train_phase.csv')
 trainrssi = read_data('../ML_data/train_rssi.csv')
+traindistance = read_data('../ML_data/train_distance.csv')
 testlabel = read_data('../ML_data/test_label.csv')
 testphase = read_data('../ML_data/test_phase.csv')
 testrssi = read_data('../ML_data/test_rssi.csv')
+testdistance = read_data('../ML_data/test_distance.csv')
 #Y_trainlabel_df = pd.DataFrame(trainlabel)
 
 Y_trainlabel = np.asarray(trainlabel)
 X_trainphase = np.asarray(trainphase, dtype= np.float32)
 X_trainrssi = np.asarray(trainrssi, dtype= np.float32)
+X_traindistance = np.asarray(traindistance, dtype= np.float32)
 Y_testlabel = np.asarray(testlabel)
 X_testphase = np.asarray(testphase, dtype= np.float32)
 X_testrssi = np.asarray(testrssi, dtype= np.float32)
+X_testdistance = np.asarray(testdistance, dtype= np.float32)
+
 
 Y_train = Y_trainlabel.T
 Y_test = Y_testlabel.T
 X_trainphase = feature_normalize(X_trainphase)
 X_trainrssi = feature_normalize(X_trainrssi)
+X_traindistance = feature_normalize(X_traindistance)
 X_testphase = feature_normalize(X_testphase)
 X_testrssi = feature_normalize(X_testrssi)
+X_testdistance = feature_normalize(X_testdistance)
+
 #print(Y_train.shape)
 
 trainsize = Y_train.shape[0]
 X_train_A = []
 for i in range(0, trainsize):
-    A = np.hstack((X_trainphase[:,i][:,np.newaxis], X_trainrssi[:,i][:,np.newaxis]))
+    A = np.hstack((X_trainphase[:,i][:,np.newaxis], X_trainrssi[:,i][:,np.newaxis], X_traindistance[:,i][:,np.newaxis]))
     if i == 0:
         X_train_A = A
     else:
@@ -88,13 +96,13 @@ X_train = np.asarray(np.vsplit(X_train_A, trainsize))
 testsize = Y_test.shape[0]
 X_test_A = []
 for i in range(0, testsize):
-    A = np.hstack((X_testphase[:,i][:,np.newaxis], X_testrssi[:,i][:,np.newaxis]))
+    A = np.hstack((X_testphase[:,i][:,np.newaxis], X_testrssi[:,i][:,np.newaxis], X_testdistance[:,i][:,np.newaxis]))
     if i == 0:
         X_test_A = A
     else:
         X_test_A = np.concatenate((X_test_A, A))
 X_test = np.asarray(np.vsplit(X_test_A, testsize))
-#print(X_test.shape)
+# print(X_test.shape)
 
 ###################################
 # %%

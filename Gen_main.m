@@ -38,8 +38,8 @@ motions = [rights shakes squares circles still];
 %train data
 typesize = 5;
 trainsize = 4000;
-phase_noise = 15;
-rssi_noise = 30;
+phase_power = 30;
+rssi_power = 25;
 name = [];
 train_phasedata = [];
 train_rssidata = [];
@@ -48,15 +48,16 @@ for i=1:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*3 + 0.5;
+    speedrand = rand*10 + 1.0;
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
-    phase = awgn(phase_o, phase_noise);
-    RSSI = awgn(RSSI_o, rssi_noise);
+    phase = awgn(phase_o, phase_power);
+    RSSI = awgn(RSSI_o, rssi_power);
+    RSSI = round(RSSI ./ 0.5) .* 0.5;
     [phase] = phase_cor(phase); 
     train_label(i) = typerand - 1;
-    train_phasedata = [train_phasedata phase];
-    train_rssidata = [train_rssidata RSSI];
+    train_phasedata = [train_phasedata phase_o];
+    train_rssidata = [train_rssidata RSSI_o];
     name = [name i];
     
 end
@@ -71,6 +72,8 @@ figure;
 plot(RSSI_o);
 hold on;
 plot(RSSI,'*');
+figure;
+plot(distance);
 return;
 %}
 
@@ -93,15 +96,16 @@ for i=1:testsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*3 + 0.5;
+    speedrand = rand*10 + 1.0;
     rawdata = motions((typerand - 1) * 5 + nrand);
-    [phase, RSSI] = gen_phase_rssi(rawdata, speedrand);
-    phase = awgn(phase, phase_noise);
-    RSSI = awgn(RSSI, rssi_noise);
+    [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
+    phase = awgn(phase, phase_power);
+    RSSI = awgn(RSSI, rssi_power);
+    RSSI = round(RSSI ./ 0.5) .* 0.5;
     [phase] = phase_cor(phase); 
     test_label(i) = typerand - 1;
-    test_phasedata = [test_phasedata phase];
-    test_rssidata = [test_rssidata RSSI];
+    test_phasedata = [test_phasedata phase_o];
+    test_rssidata = [test_rssidata RSSI_o];
     name = [name i];
 end
 

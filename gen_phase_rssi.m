@@ -27,12 +27,13 @@ function [phase, RSSI] = gen_phase_rssi(rawdata, SpeedRate)
     %Position to Phase
     datasize = size(Tx);
     P_A = [Tx Ty Tz];
-    length = dist(P_A, ReaderPosition') * 2;
-    phase = (mod(length, lambda)/ lambda) * 2 * pi;
+    length = dist(P_A, ReaderPosition');
+    height = abs(ReaderPosition(3) - Tz);
+    phase = (mod(length * 2, lambda)/ lambda) * 2 * pi;
     phase = phase(end-149:end);
     
     %Position to RSSI
-    RSSI = TheoreticalRSSI(length);
+    RSSI = TheoreticalRSSI(length, height);
     RSSI = RSSI(end-149:end);
     
     %%
