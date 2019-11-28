@@ -150,7 +150,7 @@ namespace OctaneSdkUseCases
                 settings.Gpos.GetGpo(1).Mode = GpoMode.LLRPConnectionStatus;
 
                 // settings readermode
-                settings.ReaderMode = ReaderMode.DenseReaderM4;
+                settings.ReaderMode = ReaderMode.DenseReaderM8;
 
                 // Tell the reader to include the timestamp in all tag reports.
                 settings.Report.IncludeFirstSeenTime = true;
