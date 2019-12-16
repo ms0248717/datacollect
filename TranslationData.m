@@ -5,9 +5,9 @@ function [xT, yT, zT] = TranslationData(dx, dy, dz)
     yR = -dx*sind(randR) + dy*cosd(randR);
     
     %Rotation data Y-Z
-    randR = rand * 360;
-    zR = yR*cosd(randR) + dz*sind(randR);
-    yR = -yR*sind(randR) + dz*cosd(randR);
+    %randR = rand * 360;
+    %zR = yR*cosd(randR) + dz*sind(randR);
+    %yR = -yR*sind(randR) + dz*cosd(randR);
 
     %Translation data
     randTx = 2 - (rand * 4);
@@ -15,5 +15,5 @@ function [xT, yT, zT] = TranslationData(dx, dy, dz)
     randTz = 1 - (rand * 2);
     xT = xR + randTx;
     yT = yR + randTy;
-    zT = zR + randTz + 1.5;
+    zT = dz + randTz + 1.5;
 end

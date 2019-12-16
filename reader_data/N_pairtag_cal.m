@@ -1,9 +1,9 @@
 clear; clc;
 
-for num = 1:10
-    rawdata = readtable(['./still_0_50_', num2str(num), '.csv']);
-    outputphase = ['./ML_realdata/phase_still_0_50_', num2str(num), '.csv'];
-    outputrssi = ['./ML_realdata/rssi_still_0_50_', num2str(num), '.csv'];
+for num = 1:20
+    rawdata = readtable(['./square_0_50_', num2str(num), '.csv']);
+    outputphase = ['./ML_realdata/phase_square_0_50_', num2str(num), '.csv'];
+    outputrssi = ['./ML_realdata/rssi_square_0_50_', num2str(num), '.csv'];
 
     %load data
     %EPC = split(string(rawdata.x___EPC_(:)));

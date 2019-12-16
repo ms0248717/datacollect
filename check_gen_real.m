@@ -4,18 +4,18 @@ shake1 = importdata('./Trajectory/shake/Documents/data.csv');
 square1 = importdata('./Trajectory/square/Documents/data.csv');
 circle1 = importdata('./Trajectory/circle/Documents/data.csv');
 
-phase_power = 30;
+phase_power = 15;
 rssi_power = 25;
 
 speedrand = rand*10 + 1.0;
-rawdata = shake1;
+rawdata = circle1;
 [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
 phase_gen = awgn(phase_o, phase_power);
 RSSI_gen = awgn(RSSI_o, rssi_power);
 RSSI_gen = round(RSSI_gen ./ 0.5) .* 0.5;
 [phase_gen] = phase_cor(phase_gen); 
 
-rawdata = readtable('./reader_data/shake_0_50_3.csv');
+rawdata = readtable('./reader_data/circle_0_50_3.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -41,7 +41,7 @@ FIGURE = false;
 
 %Calibration to center freq
 phasecor = (phase ./ freq) .* centerfreq;
-phasecor = fixwrapping(freq, phase, rawdataSIZE);
+%phasecor = fixwrapping(freq, phase, rawdataSIZE);
 
 %Add blank by min delta T
 [rawEPC, rawphase, rawrssi, rawSIZE] = add_blank(time, EPC, phasecor, rssi, rawdataSIZE);
