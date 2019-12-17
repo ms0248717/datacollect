@@ -8,14 +8,14 @@ phase_power = 15;
 rssi_power = 25;
 
 speedrand = rand*10 + 1.0;
-rawdata = circle1;
+rawdata = right1;
 [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
 phase_gen = awgn(phase_o, phase_power);
 RSSI_gen = awgn(RSSI_o, rssi_power);
 RSSI_gen = round(RSSI_gen ./ 0.5) .* 0.5;
-[phase_gen] = phase_cor(phase_gen); 
+[phase_gen] = unwrapping(phase_gen, 150); 
 
-rawdata = readtable('./reader_data/circle_0_50_3.csv');
+rawdata = readtable('./reader_data/line_0_50_4.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
