@@ -70,7 +70,7 @@ class ViewController: UIViewController {
             //print(motion.rotationRate)
             
             self.number += 1
-            let newLine = "\(x),\(y),\(zero)\n"
+            let newLine = "\(x),\(zero),\(zero)\n"
             self.csvText.append(contentsOf: newLine)
             print(self.number)
 			//print(motion.userAcceleration)

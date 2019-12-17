@@ -1,5 +1,5 @@
 still1 = importdata('./Trajectory/still/Documents/data.csv');
-right1 = importdata('./Trajectory/right/Documents/data.csv');
+right1 = importdata('./Trajectory/line/Documents/data.csv');
 shake1 = importdata('./Trajectory/shake/Documents/data.csv');
 square1 = importdata('./Trajectory/square/Documents/data.csv');
 circle1 = importdata('./Trajectory/circle/Documents/data.csv');

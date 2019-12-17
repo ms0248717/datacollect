@@ -24,11 +24,11 @@ lambda = C / freq;
 [dx, dy, dz] = CalibrationPosition(ax, ay, az, datacollectfreq, noiserange, ConvergeRate, SpeedRate);
 %[dx, dy, dz] = Position(ax, ay, az, datacollectfreq);
 %Translation data
-[Tx, Ty, Tz] = TranslationData(dx, dy, dz); 
+%[Tx, Ty, Tz] = TranslationData(dx, dy, dz); 
 
 figure;
 plot(dx, dy,'*')
 grid on;
 axis([-0.3, 0.3, -0.3, 0.3]);
 figure;
-plot3(Tx, Ty, Tz, '*')
+plot3(dx, dy, dz, '*')

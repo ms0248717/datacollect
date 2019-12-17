@@ -2,12 +2,12 @@ close all;
 clear;
 
 %Load data
-right1 = importdata('./Trajectory/right/Documents/data.csv');
-right2 = importdata('./Trajectory/right/Documents 2/data.csv');
-right3 = importdata('./Trajectory/right/Documents 3/data.csv');
-right4 = importdata('./Trajectory/right/Documents 4/data.csv');
-right5 = importdata('./Trajectory/right/Documents 5/data.csv');
-rights = [right1 right2 right3 right4 right5];
+line1 = importdata('./Trajectory/line/Documents/data.csv');
+line2 = importdata('./Trajectory/line/Documents 2/data.csv');
+line3 = importdata('./Trajectory/line/Documents 3/data.csv');
+line4 = importdata('./Trajectory/line/Documents 4/data.csv');
+line5 = importdata('./Trajectory/line/Documents 5/data.csv');
+lines = [line1 line2 line3 line4 line5];
 
 shake1 = importdata('./Trajectory/shake/Documents/data.csv');
 shake2 = importdata('./Trajectory/shake/Documents 2/data.csv');
@@ -33,7 +33,7 @@ circles = [circle1 circle2 circle3 circle4 circle5];
 still1 = importdata('./Trajectory/still/Documents/data.csv');
 still = [still1 still1 still1 still1 still1];
 
-motions = [rights shakes squares circles still];
+motions = [lines shakes squares circles still];
 load('./reader_data/stillnoise.mat')
 
 %train data
