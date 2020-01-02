@@ -22,7 +22,7 @@ def feature_normalize(dataset):
     for i in range(0, dataset.shape[1]):
         if sigma[i] == 0:
             sigma[i] = 1
-    return (dataset - mu)/sigma
+    return (dataset - mu)
 
 def show_confusion_matrix(validations, predictions):
 
@@ -181,7 +181,7 @@ model_m.compile(loss='categorical_crossentropy',
 
 # Hyper-parameters
 BATCH_SIZE = 400
-EPOCHS = 50
+EPOCHS = 30
 
 # Enable validation to use ModelCheckpoint and EarlyStopping callbacks.
 history = model_m.fit(x_train,

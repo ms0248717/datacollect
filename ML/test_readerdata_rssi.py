@@ -31,55 +31,60 @@ def read_data(file_path):
 LABELS = ["line","shake","square","circle","still"]
 result = [0, 0, 0, 0, 0]
 
-for j in range(1 ,21):
+model = load_model('./bestmodel/C5_25rssi_1.h5')
 
-    #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
-    rssi = read_data('../reader_data/ML_realdata/rssi_still_0_50_' + str(j) + '.csv')
+for k in range(0,5):
+    result = [0, 0, 0, 0, 0]
+    for j in range(1 ,21):
 
-    #X_phase = np.asarray(phase, dtype= np.float32)
-    X_rssi = np.asarray(rssi, dtype= np.float32)
+        #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
+        rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[k] + '_0_50_' + str(j) + '.csv')
+        #rssi = read_data('../reader_data/ML_realdata/rssi_' + 'still' + '_0_50_' + str(j) + '.csv')
 
 
-    #X_phase = feature_normalize(X_phase)
-    X_rssi = feature_normalize(X_rssi)
+        #X_phase = np.asarray(phase, dtype= np.float32)
+        X_rssi = np.asarray(rssi, dtype= np.float32)
 
-    size = X_rssi.shape[1]
 
-    X_test_A = []
-    for i in range(0, size):
-        A = X_rssi[:,i][:,np.newaxis]
-        if i == 0:
-            X_test_A = A
-        else:
-            X_test_A = np.concatenate((X_test_A, A))
-    X_test = np.asarray(np.vsplit(X_test_A, size))
+        #X_phase = feature_normalize(X_phase)
+        X_rssi = feature_normalize(X_rssi)
 
-    # Set input & output dimensions
-    num_time_periods, num_sensors = X_test.shape[1], X_test.shape[2]
-    num_classes = 5
+        size = X_rssi.shape[1]
 
-    # Set input_shape / reshape for Keras
-    # Remark: acceleration data is concatenated in one array in order to feed
-    # it properly into coreml later, the preferred matrix of shape [40,3]
-    # cannot be read in with the current version of coreml (see also reshape
-    # layer as the first layer in the keras model)
-    input_shape = (num_time_periods*num_sensors)
+        X_test_A = []
+        for i in range(0, size):
+            A = X_rssi[:,i][:,np.newaxis]
+            if i == 0:
+                X_test_A = A
+            else:
+                X_test_A = np.concatenate((X_test_A, A))
+        X_test = np.asarray(np.vsplit(X_test_A, size))
 
-    # print('input_shape:', input_shape)
+        # Set input & output dimensions
+        num_time_periods, num_sensors = X_test.shape[1], X_test.shape[2]
+        num_classes = 5
 
-    x_test = X_test
+        # Set input_shape / reshape for Keras
+        # Remark: acceleration data is concatenated in one array in order to feed
+        # it properly into coreml later, the preferred matrix of shape [40,3]
+        # cannot be read in with the current version of coreml (see also reshape
+        # layer as the first layer in the keras model)
+        input_shape = (num_time_periods*num_sensors)
 
-    x_test = x_test.reshape(x_test.shape[0], input_shape)
+        # print('input_shape:', input_shape)
 
-    x_test = x_test.astype("float32")
+        x_test = X_test
 
-    model = load_model('./bestmodel/C5_3_25rssi.h5')
-    # print('test after load: ', model.predict(x_test))
-    y_pred_test = model.predict(x_test)
-    # Take the class with the highest probability from the test predictions
-    max_y_pred_test = np.argmax(y_pred_test, axis=1)
-    for i in range(0, size):
-        print(LABELS[max_y_pred_test[i]])
-        result[max_y_pred_test[i]] = result[max_y_pred_test[i]] + 1
+        x_test = x_test.reshape(x_test.shape[0], input_shape)
 
-print(result)
+        x_test = x_test.astype("float32")
+        # print('test after load: ', model.predict(x_test))
+        y_pred_test = model.predict(x_test)
+        # Take the class with the highest probability from the test predictions
+        max_y_pred_test = np.argmax(y_pred_test, axis=1)
+        for i in range(0, size):
+            print(j,LABELS[max_y_pred_test[i]], y_pred_test)
+            result[max_y_pred_test[i]] = result[max_y_pred_test[i]] + 1
+            
+    #print(k+1)
+    print(result)

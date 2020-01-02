@@ -1,21 +1,27 @@
 still1 = importdata('./Trajectory/still/Documents/data.csv');
-right1 = importdata('./Trajectory/line/Documents/data.csv');
+line1 = importdata('./Trajectory/line/Documents/data.csv');
 shake1 = importdata('./Trajectory/shake/Documents/data.csv');
 square1 = importdata('./Trajectory/square/Documents/data.csv');
 circle1 = importdata('./Trajectory/circle/Documents/data.csv');
+load('./reader_data/stillnoise.mat')
+
 
 phase_power = 15;
 rssi_power = 25;
 
 speedrand = rand*10 + 1.0;
-rawdata = right1;
+rawdata = square1;
 [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
 phase_gen = awgn(phase_o, phase_power);
 RSSI_gen = awgn(RSSI_o, rssi_power);
 RSSI_gen = round(RSSI_gen ./ 0.5) .* 0.5;
-[phase_gen] = unwrapping(phase_gen, 150); 
+%[phase_gen] = unwrapping(phase_gen, 150); 
+[phase_gen] = phase_cor(phase_gen); 
+%phase_gen = phase_gen + stillnoise(:,unidrnd(10));
+[distance_gen] = distance_cal(freq, phase, 150);
 
-rawdata = readtable('./reader_data/line_0_50_4.csv');
+
+rawdata = readtable('./reader_data/data/circle_0_50_14.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -40,6 +46,7 @@ OUTPUT = true;
 FIGURE = false;
 
 %Calibration to center freq
+%phase = unwrapping(phase, SIZE);
 phasecor = (phase ./ freq) .* centerfreq;
 %phasecor = fixwrapping(freq, phase, rawdataSIZE);
 

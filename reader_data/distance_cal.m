@@ -7,10 +7,14 @@ function [distance] = distance_cal(channelfreq, phase, num)
             distance(i) = distance(i-1);
         else
             diffphase = phase(i - 1) - phase(i);
-            if diffphase < -pi
+            if diffphase < -pi*3/2
                 diffphase = diffphase + (2*pi);
-            elseif diffphase > pi
+            elseif diffphase > pi*3/2
                 diffphase = diffphase - (2*pi);  
+            elseif diffphase < -pi/2
+                diffphase = diffphase + pi;
+            elseif diffphase > pi/2
+                diffphase = diffphase - pi;
             end
             distance(i) = distance(i-1) - ((lambda * diffphase) / (4*pi));
         end

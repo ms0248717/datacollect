@@ -1,9 +1,9 @@
 clear; clc;
-
+LABELS = ["line","shake","square","circle","still"];
 for num = 1:20
-    rawdata = readtable(['./still_0_50_', num2str(num), '.csv']);
-    outputphase = ['./ML_realdata/phase_still_0_50_', num2str(num), '.csv'];
-    outputrssi = ['./ML_realdata/rssi_still_0_50_', num2str(num), '.csv'];
+    rawdata = readtable(['./data/','still','_0_50_', num2str(num), '.csv']);
+    outputphase = ['./ML_realdata/phase_','still','_0_50_', num2str(num), '.csv'];
+    outputrssi = ['./ML_realdata/rssi_','still','_0_50_', num2str(num), '.csv'];
 
     %load data
     %EPC = split(string(rawdata.x___EPC_(:)));

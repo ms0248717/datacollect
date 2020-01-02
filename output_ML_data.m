@@ -11,7 +11,8 @@ function [name, phasedata, rssidata] = output_ML_data(collect_sec, rawSIZE, SIZE
         if (endT(i) - firstT(i) > takeSIZE)
             phase_take = phase(endT(i) - takeSIZE + 1: endT(i), i);
             phase_take = mean(reshape(phase_take, sampleSIZE, []));
-            [output_phase] = unwrapping(phase_take', 150);
+            [output_phase] = phase_take';
+            [output_phase] = phase_cor(phase_take');
             rssi_take = rssi(endT(i) - takeSIZE + 1: endT(i), i);
             rssi_take = mean(reshape(rssi_take, sampleSIZE, []));
             RSSI = round(rssi_take' ./ 0.5) .* 0.5;

@@ -1,10 +1,10 @@
 clear; clc;
-
-for num = 1:10
-    rawdata = readtable(['./circle_0_50_', num2str(num), '.csv']);
-    outputphase = ['./ML_realdata/phase_circle_0_50_', num2str(num), '.csv'];
-    outputrssi = ['./ML_realdata/rssi_circle_0_50_', num2str(num), '.csv'];
-    outputdistance = ['./ML_realdata/distance_circle_0_50_', num2str(num), '.csv'];
+LABELS = ["line","shake","square","circle","still"];
+for num = 1:20
+    rawdata = readtable(['./data/','line','_0_50_', num2str(num), '.csv']);
+    outputphase = ['./ML_realdata/phase_','line','_0_50_', num2str(num), '.csv'];
+    outputrssi = ['./ML_realdata/rssi_','line','_0_50_', num2str(num), '.csv'];
+    outputdistance = ['./ML_realdata/distance_','line','_0_50_', num2str(num), '.csv'];
 
     %load data
     %EPC = split(string(rawdata.x___EPC_(:)));
@@ -12,7 +12,7 @@ for num = 1:10
     time = str2double(rawdata.Timestamp(:));
     freq = str2double(rawdata.ChannelInMhz(:));
     rssi = str2double(rawdata.PeakRssiInDbm(:));
-    phase = str2double(rawdata.PhaseAngleInRadians(:));
+    phase_o = str2double(rawdata.PhaseAngleInRadians(:));
 
     time = time - time(1);
     %%EPC = split(EPC);
@@ -29,10 +29,12 @@ for num = 1:10
     FIGURE = false;
 
     %Calibration to center freq
-    phasecor = (phase ./ freq) .* centerfreq;
+    phasecor = (phase_o ./ freq) .* centerfreq;
     %phasecor = fixwrapping(freq, phase, rawdataSIZE);
     
-    [distance_c] = distance_cal(freq, phase, rawdataSIZE);
+    [distance_c] = distance_cal(freq, phase_o, rawdataSIZE);
+    %figure;
+    %plot(distance_c)
 
     %Add blank by min delta T
     [rawEPC, rawphase, rawrssi, rawdistance,rawSIZE] = add_blank_dis(time, EPC, phasecor, rssi, distance_c, rawdataSIZE);
@@ -42,6 +44,7 @@ for num = 1:10
 
     %Plot
     if FIGURE
+        %{
         figure;
         for i = 1:SIZE
             plot(phase(:, i), 'DisplayName', ['tag ',num2str(i)]);
@@ -65,6 +68,18 @@ for num = 1:10
         xlabel('Sample')
         ylabel('rssi(dB)')
         title('RSSI');
+        %}
+        
+        figure;
+        for i = 1:SIZE
+            plot(distance(:, i), 'DisplayName', ['tag ',num2str(i)]);
+            hold on;
+        end
+        hold off;
+        legend;
+        xlabel('Sample')
+        ylabel('Distance(m)')
+        title('Distance');
     end
 
     %output data 150 samples of phase and rssi 

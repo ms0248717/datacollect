@@ -15,14 +15,23 @@ from keras.layers import Dense, Dropout, Flatten, Reshape, GlobalAveragePooling1
 from keras.layers import Conv2D, MaxPooling2D, Conv1D, MaxPooling1D
 from keras.utils import np_utils
 
-def feature_normalize(dataset):
+def feature_normalize_p(dataset):
 
     mu = np.mean(dataset, axis=0)
     sigma = np.std(dataset, axis=0)
     for i in range(0, dataset.shape[1]):
         if sigma[i] == 0:
             sigma[i] = 1
-    return (dataset - mu)/sigma
+    return (dataset - mu)
+
+def feature_normalize_r(dataset):
+
+    mu = np.mean(dataset, axis=0)
+    sigma = np.std(dataset, axis=0)
+    for i in range(0, dataset.shape[1]):
+        if sigma[i] == 0:
+            sigma[i] = 1
+    return (dataset - mu)
 
 def show_confusion_matrix(validations, predictions):
 
@@ -70,10 +79,10 @@ X_testrssi = np.asarray(testrssi, dtype= np.float32)
 
 Y_train = Y_trainlabel.T
 Y_test = Y_testlabel.T
-X_trainphase = feature_normalize(X_trainphase)
-X_trainrssi = feature_normalize(X_trainrssi)
-X_testphase = feature_normalize(X_testphase)
-X_testrssi = feature_normalize(X_testrssi)
+X_trainphase = feature_normalize_p(X_trainphase)
+X_trainrssi = feature_normalize_r(X_trainrssi)
+X_testphase = feature_normalize_p(X_testphase)
+X_testrssi = feature_normalize_r(X_testrssi)
 
 #print(Y_train.shape)
 
