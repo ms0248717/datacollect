@@ -65,6 +65,7 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     %return
     %}
     
+    
     %%
 
     %Convert to m
@@ -122,7 +123,8 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     title('Z-Velocity')
     %axis([-inf, inf, -0.01, 0.01]);
     %return;
-
+    
+    
 
     figure;
     plot(dx, dy,'*')
@@ -131,5 +133,6 @@ function [dx, dy, dz] = CalibrationPosition(ax, ay, az, freq, noiserange, Conver
     figure;
     plot3(dx, dy, dz, '*')
     %}
+    
     
 end

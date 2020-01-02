@@ -1,7 +1,7 @@
 close all;
 clear;
 
-rawdata = importdata('./data.csv');
+rawdata = importdata('./Trajectory/line/Documents 3/data.csv');
 
 ax = rawdata.data(:,1);
 ay = rawdata.data(:,2);
@@ -29,6 +29,6 @@ lambda = C / freq;
 figure;
 plot(dx, dy,'*')
 grid on;
-axis([-0.3, 0.3, -0.3, 0.3]);
+%axis([-0.3, 0.3, -0.3, 0.3]);
 figure;
 plot3(dx, dy, dz, '*')

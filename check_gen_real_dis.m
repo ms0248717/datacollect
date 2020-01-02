@@ -8,25 +8,25 @@ circle1 = importdata('./Trajectory/circle/Documents/data.csv');
 load('./reader_data/stillnoise.mat')
 
 
-phase_power = 45;
-rssi_power = 25;
+phase_power = 10;
+rssi_power = 10;
 freq = ones(150, 1)*925.0;
 
 
 speedrand = rand*10 + 1.0;
-rawdata = line1;
+rawdata = still1;
 [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
-phase_gen = awgn(phase_o, phase_power);
 %phase_gen = phase_o;
 RSSI_gen = awgn(RSSI_o, rssi_power);
 RSSI_gen = round(RSSI_gen ./ 0.5) .* 0.5;
 %[phase_gen] = unwrapping(phase_gen, 150); 
-[phase_gen] = phase_cor(phase_gen); 
+[phase_gen] = phase_cor(phase_o); 
 %phase_gen = phase_gen + stillnoise(:,unidrnd(10));
 [distance_gen] = distance_cal(freq, phase_gen, 150);
+phase_gen = phase_gen + (stillnoise(:,unidrnd(10))*2);
+%phase_gen = awgn(phase_o, phase_power);
 
-
-rawdata = readtable('./reader_data/data/line_0_50_12.csv');
+rawdata = readtable('./reader_data/data/still_0_150_2.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -65,14 +65,14 @@ phasecor = (phase_o ./ freq) .* centerfreq;
 collect_sec = 8.0;
 [name, phasedata, rssidata, distancedata] = output_ML_data_dis(collect_sec, rawSIZE, SIZE, firstT, endT, phase, rssi, distance, 'tag');
 
-%figure;
-%plot(phase_gen, '*');
-%hold on;
-%plot(phasedata,'o');
-%xlabel('Sample')
-%ylabel('Phase(^o)')
-%title('Phase');
-%hold off;
+figure;
+plot(phase_gen, '*');
+hold on;
+plot(phasedata,'o');
+xlabel('Sample')
+ylabel('Phase(^o)')
+title('Phase');
+hold off;
 figure;
 plot(RSSI_gen, '*');
 hold on;
@@ -87,3 +87,22 @@ plot(distancedata,'o');
 xlabel('Sample')
 ylabel('Distance(m)')
 title('Distance');
+hold off;
+
+%{
+v = zeros(210,1);
+a = zeros(210,1);
+b = zeros(210,1);
+for i=62:210
+    v(i-1) = (distancedata(i-60) - distancedata(i-1-60))*30;
+end
+for i=62:210
+    a(i-1) = (v(i) - v(i-1))*30;
+end
+a = awgn(a, 50);
+z = [a, b, b];
+name = {'x', 'y', 'z'};
+
+csvwrite('./data1.csv', name);
+dlmwrite('./data1.csv', z, '-append');
+%}

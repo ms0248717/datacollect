@@ -2,11 +2,11 @@ close all;
 clear;
 
 %Load data
-line1 = importdata('./Trajectory/line/Documents/data.csv');
-line2 = importdata('./Trajectory/line/Documents 2/data.csv');
-line3 = importdata('./Trajectory/line/Documents 3/data.csv');
-line4 = importdata('./Trajectory/line/Documents 4/data.csv');
-line5 = importdata('./Trajectory/line/Documents 5/data.csv');
+line1 = importdata('./Trajectory/line/Documents/data1.csv');
+line2 = importdata('./Trajectory/line/Documents 2/data1.csv');
+line3 = importdata('./Trajectory/line/Documents 3/data1.csv');
+line4 = importdata('./Trajectory/line/Documents 4/data1.csv');
+line5 = importdata('./Trajectory/line/Documents 5/data1.csv');
 lines = [line1 line2 line3 line4 line5];
 
 shake1 = importdata('./Trajectory/shake/Documents/data.csv');
@@ -40,7 +40,7 @@ load('./reader_data/stillnoise.mat')
 typesize = 2;
 trainsize = 4000;
 phase_power = 15;
-rssi_power = 25;
+rssi_power = 10;
 name = [];
 train_phasedata = [];
 train_rssidata = [];
@@ -61,7 +61,7 @@ for i=1:trainsize
     [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
     [phase_o] = unwrapping(phase_o, 150); 
     if typerand == 2
-        phase = phase_o + stillnoise(:,unidrnd(10));
+        phase = phase_o + (stillnoise(:,unidrnd(10)) * (1+rand));
     else
         phase = awgn(phase_o, phase_power);
     %phase = phase_o;
@@ -125,9 +125,9 @@ for i=1:testsize
     [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
     [phase_o] = unwrapping(phase_o, 150); 
     if typerand == 2
-        phase = phase_o + stillnoise(:,unidrnd(10));
+        phase = phase_o + (stillnoise(:,unidrnd(10)) * (1+rand));
     else
-    phase = awgn(phase_o, phase_power);
+        phase = awgn(phase_o, phase_power);
     %phase = phase_o;
     end
     RSSI = awgn(RSSI_o, rssi_power);
