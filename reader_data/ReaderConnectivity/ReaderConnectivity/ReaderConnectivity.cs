@@ -29,7 +29,7 @@ namespace OctaneSdkUseCases
         // Create an instance of the ImpinjReader class.
         static ImpinjReader reader = new ImpinjReader();
         //public DataTable table = new DataTable("TagTable");
-        const string fullpath = @"..\..\..\..\test.csv";
+        const string fullpath = @"..\..\..\..\data\circle_0_150_20.csv";
 
         static void ConnectToReader()
         {
@@ -150,7 +150,7 @@ namespace OctaneSdkUseCases
                 settings.Gpos.GetGpo(1).Mode = GpoMode.LLRPConnectionStatus;
 
                 // settings readermode
-                settings.ReaderMode = ReaderMode.DenseReaderM8;
+                settings.ReaderMode = ReaderMode.DenseReaderM4;
 
                 // Tell the reader to include the timestamp in all tag reports.
                 settings.Report.IncludeFirstSeenTime = true;
