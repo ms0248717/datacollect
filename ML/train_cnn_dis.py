@@ -18,20 +18,22 @@ from keras.utils import np_utils
 def feature_normalize_d(dataset):
 
     mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    for i in range(0, dataset.shape[1]):
-        if sigma[i] == 0:
-            sigma[i] = 1
-    return (dataset - mu)/sigma
+    max_d = np.max(dataset, axis=0)
+    min_d = np.min(dataset, axis=0)
+    #for i in range(0, dataset.shape[1]):
+    #    if sigma[i] == 0:
+    #        sigma[i] = 1
+    return (dataset - min_d)/(max_d - min_d)
 
 def feature_normalize_r(dataset):
 
     mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    for i in range(0, dataset.shape[1]):
-        if sigma[i] == 0:
-            sigma[i] = 1
-    return (dataset - mu)/sigma
+    max_d = np.max(dataset, axis=0)
+    min_d = np.min(dataset, axis=0)
+    #for i in range(0, dataset.shape[1]):
+    #    if sigma[i] == 0:
+    #        sigma[i] = 1
+    return (dataset - min_d)/(max_d - min_d)
 
 def show_confusion_matrix(validations, predictions):
 

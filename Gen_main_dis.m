@@ -2,11 +2,11 @@ close all;
 clear;
 
 %Load data
-line1 = importdata('./Trajectory/line/Documents/data.csv');
-line2 = importdata('./Trajectory/line/Documents 2/data.csv');
-line3 = importdata('./Trajectory/line/Documents 3/data.csv');
-line4 = importdata('./Trajectory/line/Documents 4/data.csv');
-line5 = importdata('./Trajectory/line/Documents 5/data.csv');
+line1 = importdata('./Trajectory/line/Documents/data1.csv');
+line2 = importdata('./Trajectory/line/Documents 2/data1.csv');
+line3 = importdata('./Trajectory/line/Documents 3/data1.csv');
+line4 = importdata('./Trajectory/line/Documents 4/data1.csv');
+line5 = importdata('./Trajectory/line/Documents 5/data1.csv');
 lines = [line1 line2 line3 line4 line5];
 
 shake1 = importdata('./Trajectory/shake/Documents/data.csv');
@@ -30,28 +30,43 @@ circle4 = importdata('./Trajectory/circle/Documents 4/data.csv');
 circle5 = importdata('./Trajectory/circle/Documents 5/data.csv');
 circles = [circle1 circle2 circle3 circle4 circle5];
 
-still1 = importdata('./Trajectory/still/Documents/data.csv');
-still = [still1 still1 still1 still1 still1];
+%still1 = importdata('./Trajectory/still/Documents/data.csv');
+%still = [still1 still1 still1 still1 still1];
 
 motions = [lines shakes squares circles];
 load('./reader_data/stillnoise.mat')
+load('./reader_data/reader_distance.mat')
+load('./reader_data/reader_rssi.mat')
+load('./reader_data/reader_phase.mat')
 
 %train data
 typesize = 4;
-trainsize = 4000;
-phase_power = 70;
-rssi_power = 25;
+trainsize = 2000;
+phase_power = 30;
+rssi_power = 10;
 name = [];
 train_phasedata = [];
 train_rssidata = [];
 train_distancedata = [];
 train_label = zeros(1, trainsize);
 freq = ones(150, 1)*925.0;
-for i=1:trainsize
+for i=1:108
+    train_label(i) = floor((i - 1)/27);
+    train_phasedata = [train_phasedata reader_phase(:,i)];
+    train_rssidata = [train_rssidata reader_rssi(:,i)];
+    train_distancedata = [train_distancedata reader_distance(:,i)];
+    name = [name i];
+end
+
+for i=109:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*10 + 1.0;
+    if typerand == 1
+        speedrand = rand + 4.5;
+    else
+        speedrand = rand + 0.5;
+    end
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
     [phase_o] = unwrapping(phase_o, 150); 
@@ -72,6 +87,12 @@ for i=1:trainsize
     name = [name i];
     
 end
+r = randperm(trainsize);
+r = 1:trainsize;
+train_label_r = train_label(r); 
+train_phasedata_r = train_phasedata(:,r);
+train_rssidata_r = train_rssidata(:,r);
+train_distancedata_r = train_distancedata(:,r);
 %
 %{
 figure;
@@ -91,13 +112,13 @@ return;
 
 %write train data file
 csvwrite('./ML_data/train_label.csv', name);
-dlmwrite('./ML_data/train_label.csv', train_label, '-append');
+dlmwrite('./ML_data/train_label.csv', train_label_r, '-append');
 csvwrite('./ML_data/train_phase.csv', name);
-dlmwrite('./ML_data/train_phase.csv', train_phasedata, '-append');
+dlmwrite('./ML_data/train_phase.csv', train_phasedata_r, '-append');
 csvwrite('./ML_data/train_rssi.csv', name);
-dlmwrite('./ML_data/train_rssi.csv', train_rssidata, '-append');
+dlmwrite('./ML_data/train_rssi.csv', train_rssidata_r, '-append');
 csvwrite('./ML_data/train_distance.csv', name);
-dlmwrite('./ML_data/train_distance.csv', train_distancedata, '-append');
+dlmwrite('./ML_data/train_distance.csv', train_distancedata_r, '-append');
 
 %test data
 testsize = 1000;
@@ -110,7 +131,11 @@ for i=1:testsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
-    speedrand = rand*10 + 1.0;
+    if typerand == 1
+        speedrand = rand + 4.5;
+    else
+        speedrand = rand + 0.5;
+    end
     rawdata = motions((typerand - 1) * 5 + nrand);
     [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
     [phase_o] = unwrapping(phase_o, 150); 

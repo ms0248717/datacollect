@@ -1,32 +1,34 @@
 close all;
 clear;
 still1 = importdata('./Trajectory/still/Documents/data.csv');
-line1 = importdata('./Trajectory/line/Documents/data.csv');
+line1 = importdata('./Trajectory/line/Documents/data1.csv');
 shake1 = importdata('./Trajectory/shake/Documents/data.csv');
 square1 = importdata('./Trajectory/square/Documents/data.csv');
 circle1 = importdata('./Trajectory/circle/Documents/data.csv');
 load('./reader_data/stillnoise.mat')
 
 
-phase_power = 10;
+phase_power = 30;
 rssi_power = 10;
 freq = ones(150, 1)*925.0;
 
 
-speedrand = rand*10 + 1.0;
-rawdata = still1;
+speedrand = 1.0;
+rawdata = square1;
 [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
+[phase_o] = unwrapping(phase_o, 150); 
 %phase_gen = phase_o;
 RSSI_gen = awgn(RSSI_o, rssi_power);
 RSSI_gen = round(RSSI_gen ./ 0.5) .* 0.5;
 %[phase_gen] = unwrapping(phase_gen, 150); 
-[phase_gen] = phase_cor(phase_o); 
+phase_gen = awgn(phase_o, phase_power);
+%[phase_gen] = phase_cor(phase_o); 
 %phase_gen = phase_gen + stillnoise(:,unidrnd(10));
 [distance_gen] = distance_cal(freq, phase_gen, 150);
-phase_gen = phase_gen + (stillnoise(:,unidrnd(10))*2);
+%phase_gen = phase_gen + (stillnoise(:,unidrnd(10))*2);
 %phase_gen = awgn(phase_o, phase_power);
 
-rawdata = readtable('./reader_data/data/still_0_150_2.csv');
+rawdata = readtable('./reader_data/data/square_0_150_10.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
@@ -99,6 +101,7 @@ end
 for i=62:210
     a(i-1) = (v(i) - v(i-1))*30;
 end
+a = a ./ 20.0;
 a = awgn(a, 50);
 z = [a, b, b];
 name = {'x', 'y', 'z'};

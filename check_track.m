@@ -1,7 +1,7 @@
 close all;
 clear;
 
-rawdata = importdata('./Trajectory/line/Documents 3/data.csv');
+rawdata = importdata('./Trajectory/line/Documents 5/data1.csv');
 
 ax = rawdata.data(:,1);
 ay = rawdata.data(:,2);
