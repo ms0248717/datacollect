@@ -41,7 +41,7 @@ load('./reader_data/reader_phase.mat')
 
 %train data
 typesize = 4;
-trainsize = 2000;
+trainsize = 3000;
 phase_power = 30;
 rssi_power = 10;
 name = [];
@@ -50,15 +50,15 @@ train_rssidata = [];
 train_distancedata = [];
 train_label = zeros(1, trainsize);
 freq = ones(150, 1)*925.0;
-for i=1:108
-    train_label(i) = floor((i - 1)/27);
+for i=1:120
+    train_label(i) = floor((i - 1)/30);
     train_phasedata = [train_phasedata reader_phase(:,i)];
     train_rssidata = [train_rssidata reader_rssi(:,i)];
     train_distancedata = [train_distancedata reader_distance(:,i)];
     name = [name i];
 end
 
-for i=109:trainsize
+for i=121:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
@@ -87,12 +87,12 @@ for i=109:trainsize
     name = [name i];
     
 end
-r = randperm(trainsize);
-r = 1:trainsize;
-train_label_r = train_label(r); 
-train_phasedata_r = train_phasedata(:,r);
-train_rssidata_r = train_rssidata(:,r);
-train_distancedata_r = train_distancedata(:,r);
+%r = randperm(trainsize);
+%r = 1:trainsize;
+%train_label_r = train_label(r); 
+%train_phasedata_r = train_phasedata(:,r);
+%train_rssidata_r = train_rssidata(:,r);
+%train_distancedata_r = train_distancedata(:,r);
 %
 %{
 figure;
@@ -112,13 +112,13 @@ return;
 
 %write train data file
 csvwrite('./ML_data/train_label.csv', name);
-dlmwrite('./ML_data/train_label.csv', train_label_r, '-append');
+dlmwrite('./ML_data/train_label.csv', train_label, '-append');
 csvwrite('./ML_data/train_phase.csv', name);
-dlmwrite('./ML_data/train_phase.csv', train_phasedata_r, '-append');
+dlmwrite('./ML_data/train_phase.csv', train_phasedata, '-append');
 csvwrite('./ML_data/train_rssi.csv', name);
-dlmwrite('./ML_data/train_rssi.csv', train_rssidata_r, '-append');
+dlmwrite('./ML_data/train_rssi.csv', train_rssidata, '-append');
 csvwrite('./ML_data/train_distance.csv', name);
-dlmwrite('./ML_data/train_distance.csv', train_distancedata_r, '-append');
+dlmwrite('./ML_data/train_distance.csv', train_distancedata, '-append');
 
 %test data
 testsize = 1000;
