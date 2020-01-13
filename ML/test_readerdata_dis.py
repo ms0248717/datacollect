@@ -46,7 +46,7 @@ DIS = ["50", "100", "150"]
 result = [0, 0, 0, 0]
 ACC = 0
 
-model = load_model('./bestmodel/C4_30_10_dis_c2.h5')
+model = load_model('./bestmodel/C4_30_10_dis_c3.h5')
 
 for lab in range(0,4):
     print(LABELS[lab])

@@ -50,15 +50,15 @@ train_rssidata = [];
 train_distancedata = [];
 train_label = zeros(1, trainsize);
 freq = ones(150, 1)*925.0;
-for i=1:120
-    train_label(i) = floor((i - 1)/30);
+for i=1:360
+    train_label(i) = floor((i - 1)/90);
     train_phasedata = [train_phasedata reader_phase(:,i)];
     train_rssidata = [train_rssidata reader_rssi(:,i)];
     train_distancedata = [train_distancedata reader_distance(:,i)];
     name = [name i];
 end
 
-for i=121:trainsize
+for i=361:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);

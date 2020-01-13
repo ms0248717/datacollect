@@ -43,7 +43,7 @@ result = [0, 0]
 LABEL =["move", "still"]
 
 model = load_model('./bestmodel/C2_15_10_2.h5')
-
+ACC = 0
 
 for lab in range(0,5):
     print(LABELS[lab])
@@ -103,4 +103,12 @@ for lab in range(0,5):
                 #print(j,LABEL[max_y_pred_test[i]])
                 result[max_y_pred_test[i]] = result[max_y_pred_test[i]] + 1
 
+        if lab == 4:
+            ACC = ACC + result[1]
+        else:
+            ACC = ACC + result[0]
+        result[0] = round(result[0]/20.0, 3)
+        result[1] = round(result[1]/20.0, 3)
         print(DIS[dis],result)
+    
+print(ACC / 300.0)

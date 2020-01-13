@@ -14,7 +14,7 @@ freq = ones(150, 1)*925.0;
 
 
 speedrand = 1.0;
-rawdata = square1;
+rawdata = shake1;
 [phase_o, RSSI_o] = gen_phase_rssi(rawdata, speedrand);
 [phase_o] = unwrapping(phase_o, 150); 
 %phase_gen = phase_o;
@@ -28,7 +28,7 @@ phase_gen = awgn(phase_o, phase_power);
 %phase_gen = phase_gen + (stillnoise(:,unidrnd(10))*2);
 %phase_gen = awgn(phase_o, phase_power);
 
-rawdata = readtable('./reader_data/data/square_0_150_10.csv');
+rawdata = readtable('./reader_data/data/shake_30_50_8.csv');
 
 %load data
 %EPC = split(string(rawdata.x___EPC_(:)));
