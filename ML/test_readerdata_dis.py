@@ -15,7 +15,7 @@ from keras.layers import Dense, Dropout, Flatten, Reshape, GlobalAveragePooling1
 from keras.layers import Conv2D, MaxPooling2D, Conv1D, MaxPooling1D
 from keras.utils import np_utils
 
-def feature_normalize_d(dataset):
+def feature_normalize(dataset):
 
     mu = np.mean(dataset, axis=0)
     sigma = np.std(dataset, axis=0)
@@ -26,16 +26,6 @@ def feature_normalize_d(dataset):
             sigma[i] = 1
     return (dataset - min_d)/(max_d - min_d)
 
-def feature_normalize_r(dataset):
-
-    mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    max_d = np.max(dataset, axis=0)
-    min_d = np.min(dataset, axis=0)
-    for i in range(0, dataset.shape[1]):
-        if sigma[i] == 0:
-            sigma[i] = 1
-    return (dataset - min_d)/(max_d - min_d)
 
 def read_data(file_path):
     df = pd.read_csv(file_path)
@@ -46,7 +36,7 @@ DIS = ["50", "100", "150"]
 result = [0, 0, 0, 0]
 ACC = 0
 
-model = load_model('./bestmodel/C4_30_10_dis_c3.h5')
+model = load_model('./bestmodel/C4_30_dis_2.h5')
 
 for lab in range(0,4):
     print(LABELS[lab])
@@ -56,22 +46,22 @@ for lab in range(0,4):
         for j in range(1 ,21):
 
             #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
-            rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_0_' + DIS[dis] + '_' + str(j) + '.csv')
-            distance = read_data('../reader_data/ML_realdata/distance_' + LABELS[lab] + '_0_' + DIS[dis] + '_' + str(j) + '.csv')
+            #rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_0_' + DIS[dis] + '_' + str(j) + '.csv')
+            distance = read_data('../reader_data/ML_realdata/distance_' + LABELS[lab] + '_30_' + DIS[dis] + '_' + str(j) + '.csv')
 
 
             X_distance = np.asarray(distance, dtype= np.float32)
-            X_rssi = np.asarray(rssi, dtype= np.float32)
+            #X_rssi = np.asarray(rssi, dtype= np.float32)
 
 
-            X_distance = feature_normalize_d(X_distance)
-            X_rssi = feature_normalize_r(X_rssi)
+            X_distance = feature_normalize(X_distance)
+            #X_rssi = feature_normalize_r(X_rssi)
 
-            size = X_rssi.shape[1]
+            size = X_distance.shape[1]
 
             X_test_A = []
             for i in range(0, size):
-                A = np.hstack((X_distance[:,i][:,np.newaxis], X_rssi[:,i][:,np.newaxis]))
+                A = X_distance[:,i][:,np.newaxis]
                 if i == 0:
                     X_test_A = A
                 else:

@@ -15,23 +15,25 @@ from keras.layers import Dense, Dropout, Flatten, Reshape, GlobalAveragePooling1
 from keras.layers import Conv2D, MaxPooling2D, Conv1D, MaxPooling1D
 from keras.utils import np_utils
 
-def feature_normalize_p(dataset):
+def feature_normalize_d(dataset):
 
     mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    for i in range(0, dataset.shape[1]):
-        if sigma[i] == 0:
-            sigma[i] = 1
-    return (dataset - mu)
+    max_d = np.max(dataset, axis=0)
+    min_d = np.min(dataset, axis=0)
+    #for i in range(0, dataset.shape[1]):
+    #    if sigma[i] == 0:
+    #        sigma[i] = 1
+    return (dataset - min_d)/(max_d - min_d)
 
 def feature_normalize_r(dataset):
 
     mu = np.mean(dataset, axis=0)
-    sigma = np.std(dataset, axis=0)
-    for i in range(0, dataset.shape[1]):
-        if sigma[i] == 0:
-            sigma[i] = 1
-    return (dataset - mu)
+    max_d = np.max(dataset, axis=0)
+    min_d = np.min(dataset, axis=0)
+    #for i in range(0, dataset.shape[1]):
+    #    if sigma[i] == 0:
+    #        sigma[i] = 1
+    return (dataset - min_d)/(max_d - min_d)
 
 def show_confusion_matrix(validations, predictions):
 
@@ -59,29 +61,29 @@ weight_save = 0
 model_save = 0
 store = 1
 high_acc = 0
-LABELS = ["line","shake","square","circle","still"]
+LABELS = ["line","shake","square","circle"]
 
 trainlabel = read_data('../ML_data/train_label.csv')
-trainphase = read_data('../ML_data/train_phase.csv')
+traindistance = read_data('../ML_data/train_distance.csv')
 trainrssi = read_data('../ML_data/train_rssi.csv')
 testlabel = read_data('../ML_data/test_label.csv')
-testphase = read_data('../ML_data/test_phase.csv')
+testdistance = read_data('../ML_data/test_distance.csv')
 testrssi = read_data('../ML_data/test_rssi.csv')
 #Y_trainlabel_df = pd.DataFrame(trainlabel)
 
 Y_trainlabel = np.asarray(trainlabel)
-X_trainphase = np.asarray(trainphase, dtype= np.float32)
+X_traindistance = np.asarray(traindistance, dtype= np.float32)
 X_trainrssi = np.asarray(trainrssi, dtype= np.float32)
 Y_testlabel = np.asarray(testlabel)
-X_testphase = np.asarray(testphase, dtype= np.float32)
+X_testdistance = np.asarray(testdistance, dtype= np.float32)
 X_testrssi = np.asarray(testrssi, dtype= np.float32)
 
 
 Y_train = Y_trainlabel.T
 Y_test = Y_testlabel.T
-X_trainphase = feature_normalize_p(X_trainphase)
+X_traindistance = feature_normalize_d(X_traindistance)
 X_trainrssi = feature_normalize_r(X_trainrssi)
-X_testphase = feature_normalize_p(X_testphase)
+X_testdistance = feature_normalize_d(X_testdistance)
 X_testrssi = feature_normalize_r(X_testrssi)
 
 #print(Y_train.shape)
@@ -89,7 +91,7 @@ X_testrssi = feature_normalize_r(X_testrssi)
 trainsize = Y_train.shape[0]
 X_train_A = []
 for i in range(0, trainsize):
-    A = np.hstack((X_trainphase[:,i][:,np.newaxis], X_trainrssi[:,i][:,np.newaxis]))
+    A = np.hstack((X_traindistance[:,i][:,np.newaxis], X_trainrssi[:,i][:,np.newaxis]))
     if i == 0:
         X_train_A = A
     else:
@@ -99,7 +101,7 @@ X_train = np.asarray(np.vsplit(X_train_A, trainsize))
 testsize = Y_test.shape[0]
 X_test_A = []
 for i in range(0, testsize):
-    A = np.hstack((X_testphase[:,i][:,np.newaxis], X_testrssi[:,i][:,np.newaxis]))
+    A = np.hstack((X_testdistance[:,i][:,np.newaxis], X_testrssi[:,i][:,np.newaxis]))
     if i == 0:
         X_test_A = A
     else:
@@ -125,7 +127,7 @@ print('y_train shape: ', y_train.shape)
 
 # Set input & output dimensions
 num_time_periods, num_sensors = x_train.shape[1], x_train.shape[2]
-num_classes = 5
+num_classes = 4
 
 # Set input_shape / reshape for Keras
 # Remark: acceleration data is concatenated in one array in order to feed

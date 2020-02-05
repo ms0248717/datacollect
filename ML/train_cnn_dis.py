@@ -15,17 +15,7 @@ from keras.layers import Dense, Dropout, Flatten, Reshape, GlobalAveragePooling1
 from keras.layers import Conv2D, MaxPooling2D, Conv1D, MaxPooling1D
 from keras.utils import np_utils
 
-def feature_normalize_d(dataset):
-
-    mu = np.mean(dataset, axis=0)
-    max_d = np.max(dataset, axis=0)
-    min_d = np.min(dataset, axis=0)
-    #for i in range(0, dataset.shape[1]):
-    #    if sigma[i] == 0:
-    #        sigma[i] = 1
-    return (dataset - min_d)/(max_d - min_d)
-
-def feature_normalize_r(dataset):
+def feature_normalize(dataset):
 
     mu = np.mean(dataset, axis=0)
     max_d = np.max(dataset, axis=0)
@@ -64,34 +54,36 @@ high_acc = 0
 LABELS = ["line","shake","square","circle"]
 
 trainlabel = read_data('../ML_data/train_label.csv')
+#trainphase = read_data('../ML_data/train_phase.csv')
+#trainrssi = read_data('../ML_data/train_rssi_nr.csv')
 traindistance = read_data('../ML_data/train_distance.csv')
-trainrssi = read_data('../ML_data/train_rssi.csv')
 testlabel = read_data('../ML_data/test_label.csv')
+#testphase = read_data('../ML_data/test_phase.csv')
+#testrssi = read_data('../ML_data/test_rssi_nr.csv')
 testdistance = read_data('../ML_data/test_distance.csv')
-testrssi = read_data('../ML_data/test_rssi.csv')
 #Y_trainlabel_df = pd.DataFrame(trainlabel)
 
 Y_trainlabel = np.asarray(trainlabel)
 X_traindistance = np.asarray(traindistance, dtype= np.float32)
-X_trainrssi = np.asarray(trainrssi, dtype= np.float32)
+#X_trainrssi = np.asarray(trainrssi, dtype= np.float32)
 Y_testlabel = np.asarray(testlabel)
 X_testdistance = np.asarray(testdistance, dtype= np.float32)
-X_testrssi = np.asarray(testrssi, dtype= np.float32)
+#X_testrssi = np.asarray(testrssi, dtype= np.float32)
 
 
 Y_train = Y_trainlabel.T
 Y_test = Y_testlabel.T
-X_traindistance = feature_normalize_d(X_traindistance)
-X_trainrssi = feature_normalize_r(X_trainrssi)
-X_testdistance = feature_normalize_d(X_testdistance)
-X_testrssi = feature_normalize_r(X_testrssi)
+X_traindistance = feature_normalize(X_traindistance)
+#X_trainrssi = feature_normalize_r(X_trainrssi)
+X_testdistance = feature_normalize(X_testdistance)
+#X_testrssi = feature_normalize_r(X_testrssi)
 
 #print(Y_train.shape)
 
 trainsize = Y_train.shape[0]
 X_train_A = []
 for i in range(0, trainsize):
-    A = np.hstack((X_traindistance[:,i][:,np.newaxis], X_trainrssi[:,i][:,np.newaxis]))
+    A = X_traindistance[:,i][:,np.newaxis]
     if i == 0:
         X_train_A = A
     else:
@@ -101,7 +93,7 @@ X_train = np.asarray(np.vsplit(X_train_A, trainsize))
 testsize = Y_test.shape[0]
 X_test_A = []
 for i in range(0, testsize):
-    A = np.hstack((X_testdistance[:,i][:,np.newaxis], X_testrssi[:,i][:,np.newaxis]))
+    A = X_testdistance[:,i][:,np.newaxis]
     if i == 0:
         X_test_A = A
     else:
@@ -127,7 +119,7 @@ print('y_train shape: ', y_train.shape)
 
 # Set input & output dimensions
 num_time_periods, num_sensors = x_train.shape[1], x_train.shape[2]
-num_classes = 4
+num_classes = 5
 
 # Set input_shape / reshape for Keras
 # Remark: acceleration data is concatenated in one array in order to feed
@@ -192,7 +184,7 @@ model_m.compile(loss='categorical_crossentropy',
 
 # Hyper-parameters
 BATCH_SIZE = 400
-EPOCHS = 50
+EPOCHS = 30
 
 # Enable validation to use ModelCheckpoint and EarlyStopping callbacks.
 history = model_m.fit(x_train,

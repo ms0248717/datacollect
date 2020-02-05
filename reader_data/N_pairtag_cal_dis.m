@@ -7,9 +7,9 @@ for lab = 1:5
         for ang = 1:3
             for num = 1:20
                 rawdata = readtable(['./data/', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_', num2str(num), '.csv']);
-                outputphase = ['./ML_realdata/phase_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_', num2str(num), '.csv'];
-                outputrssi = ['./ML_realdata/rssi_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_', num2str(num), '.csv'];
-                outputdistance = ['./ML_realdata/distance_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_', num2str(num), '.csv'];
+                outputphase = ['./ML_realdata/phase_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_n_', num2str(num), '.csv'];
+                outputrssi = ['./ML_realdata/rssi_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_n_', num2str(num), '.csv'];
+                outputdistance = ['./ML_realdata/distance_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_n_', num2str(num), '.csv'];
 
                 %load data
                 %EPC = split(string(rawdata.x___EPC_(:)));
