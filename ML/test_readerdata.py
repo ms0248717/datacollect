@@ -52,15 +52,12 @@ model = load_model('./bestmodel/C4_30_10_dis_c3.h5')
 for lab in range(0,4):
     print(LABELS[lab])
     result = [0, 0, 0, 0]
-    resultN = [0, 0, 0, 0]
     for dis in range(0,3):
         result = [0, 0, 0, 0]
-        resultN = [0, 0, 0, 0]
-        for j in range(1 ,21):
-            resultN = [0, 0, 0, 0]
+        for j in range(1 ,11):
             #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
-            rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_60_' + DIS[dis] + '_n_' + str(j) + '.csv')
-            distance = read_data('../reader_data/ML_realdata/distance_' + LABELS[lab] + '_60_' + DIS[dis] + '_n_' + str(j) + '.csv')
+            rssi = read_data('../reader_data/ML_newrealdata/rssi_' + LABELS[lab] + '_0_' + DIS[dis] + '_0_' + str(j) + '.csv')
+            distance = read_data('../reader_data/ML_newrealdata/distance_' + LABELS[lab] + '_0_' + DIS[dis] + '_0_' + str(j) + '.csv')
 
 
             X_distance = np.asarray(distance, dtype= np.float32)
@@ -103,20 +100,28 @@ for lab in range(0,4):
             y_pred_test = model.predict(x_test)
             # Take the class with the highest probability from the test predictions
             max_y_pred_test = np.argmax(y_pred_test, axis=1)
+            resultN = [0, 0, 0, 0]
             for i in range(0, size):
                 #print(j,max_y_pred_test[i])
                 resultN[max_y_pred_test[i]] = resultN[max_y_pred_test[i]] + 1
             #print(resultN)
             #print(resultN.index(max(resultN)))
             result[resultN.index(max(resultN))] = result[resultN.index(max(resultN))] + 1
+            #resultN = [0, 0, 0, 0]
+            #for i in range(15, 30):
+                #print(j,max_y_pred_test[i])
+            #    resultN[max_y_pred_test[i]] = resultN[max_y_pred_test[i]] + 1
+            #print(resultN)
+            #print(resultN.index(max(resultN)))
+            #result[resultN.index(max(resultN))] = result[resultN.index(max(resultN))] + 1
                 
     #print(k+1)
         print(DIS[dis])
         ACC = ACC + result[lab]
-        result[0] = round(result[0]/20.0, 3)
-        result[1] = round(result[1]/20.0, 3)
-        result[2] = round(result[2]/20.0, 3)
-        result[3] = round(result[3]/20.0, 3)
+        result[0] = round(result[0]/10.0, 3)
+        result[1] = round(result[1]/10.0, 3)
+        result[2] = round(result[2]/10.0, 3)
+        result[3] = round(result[3]/10.0, 3)
         print(result)
 
-print(ACC / 240.0)
+print(ACC / 120.0)
