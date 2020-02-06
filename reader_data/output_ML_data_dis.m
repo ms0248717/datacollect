@@ -5,14 +5,15 @@ function [name, phasedata, rssidata, distancedata] = output_ML_data_dis(collect_
     distancedata = [];
     take_sec = 5.0;
     outputSIZE = 150;
-    outputN = 15;
+    allN = 15;
+    outputN = 5;
     sampleSIZE = round((rawSIZE * take_sec / collect_sec) / outputSIZE);
     takeSIZE = sampleSIZE * outputSIZE;
     V = zeros(1, rawSIZE-takeSIZE);
     for i = 1:SIZE
         dataSIZE = endT(i) - firstT(i);
-        if (dataSIZE > takeSIZE) && (dataSIZE - takeSIZE > outputN)
-            step = floor((dataSIZE - takeSIZE) / outputN);
+        if (dataSIZE > takeSIZE) && (dataSIZE - takeSIZE > allN)
+            step = floor((dataSIZE - takeSIZE) / allN);
             for j = 1:outputN
                 startN = endT(i) - takeSIZE + 1 - ((j - 1) * step);
                 endN = endT(i) - ((j - 1) * step);
