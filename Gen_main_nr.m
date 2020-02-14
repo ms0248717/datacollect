@@ -38,7 +38,7 @@ load('./reader_data/stillnoise.mat')
 
 %train data
 typesize = 4;
-trainsize = 3000;
+trainsize = 4000;
 phase_power = 30;
 rssi_power = 10;
 name = [];

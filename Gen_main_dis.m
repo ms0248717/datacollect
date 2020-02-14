@@ -41,7 +41,7 @@ load('./reader_data/reader_phase.mat')
 
 %train data
 typesize = 4;
-trainsize = 3000;
+trainsize = 4000;
 phase_power = 30;
 rssi_power = 10;
 name = [];
@@ -50,15 +50,17 @@ train_rssidata = [];
 train_distancedata = [];
 train_label = zeros(1, trainsize);
 freq = ones(150, 1)*925.0;
-for i=1:360
-    train_label(i) = floor((i - 1)/90);
-    train_phasedata = [train_phasedata reader_phase(:,i)];
-    train_rssidata = [train_rssidata reader_rssi(:,i)];
-    train_distancedata = [train_distancedata reader_distance(:,i)];
+realdatasize = 432;
+
+for i=1:realdatasize
+    train_label(i) = floor((i - 1)/(realdatasize / 4));
+    train_phasedata = [train_phasedata reader_phase(2:end,i)];
+    train_rssidata = [train_rssidata reader_rssi(2:end,i)];
+    train_distancedata = [train_distancedata reader_distance(2:end,i)];
     name = [name i];
 end
 
-for i=361:trainsize
+for i=realdatasize + 1:trainsize
     
     typerand = unidrnd(typesize);
     nrand = unidrnd(5);
