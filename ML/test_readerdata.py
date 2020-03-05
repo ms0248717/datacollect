@@ -51,11 +51,11 @@ ACC = 0
 outputN = 5
 face = 0
 
-model = load_model('./bestmodel/C4_30_10_90r_0r432_1.h5')
+model = load_model('./bestmodel/C4_30_10_90r_0r432_3.h5')
 
-for dis in range(0,3):
+for ang in range(0,3):
     result = [0, 0, 0, 0]
-    for ang in range(0,3):
+    for dis in range(0,3):
         result = [0, 0, 0, 0]
         for lab in range(0,4):
             print(LABELS[lab])
@@ -124,8 +124,8 @@ for dis in range(0,3):
             result[3] = round(result[3]/20.0, 3)
             print(result)
 
-print(ACC / 720.0)
-print(mACC[0] / 180.0)
-print(mACC[1] / 180.0)
-print(mACC[2] / 180.0)
-print(mACC[3] / 180.0)
+print("Acc: ", ACC / 720.0)
+print("line: ",mACC[0] / 180.0)
+print("shake: ",mACC[1] / 180.0)
+print("square: ",mACC[2] / 180.0)
+print("circle: ",mACC[3] / 180.0)

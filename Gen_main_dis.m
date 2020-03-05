@@ -50,7 +50,7 @@ train_rssidata = [];
 train_distancedata = [];
 train_label = zeros(1, trainsize);
 freq = ones(150, 1)*925.0;
-realdatasize = 432;
+realdatasize = 720;
 
 for i=1:realdatasize
     train_label(i) = floor((i - 1)/(realdatasize / 4));
