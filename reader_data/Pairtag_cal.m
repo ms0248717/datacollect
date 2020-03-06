@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./test.csv');
+rawdata = readtable('./pair_data/h1_o15_15.csv');
 
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
@@ -18,20 +18,19 @@ rawdataSIZE = rawdataSIZE(1);
 
 %Parameter definition
 alpha = 0.3;
-beta = 2;
+beta = 4;
 gamma = 30;
 centerfreq = 925.0;
-%humID = {'BD9E', 'BD9D'};
-humID = {'BDEF'};
-objID = {'BD9E', 'BE00', 'BD9D', 'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E', 'BDB0', 'BD95', 'BDAF', 'BD55', 'BD5D'};
-objID = {'BD9E', 'BE00', 'BD9D', 'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E'};
-%objID = {'BDEF'};
+humID = {'BDEF', 'BDE7', 'BD5E', 'BD6F'};
+objID = {'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E', 'BDB0', 'BD95', 'BDAF', 'BD55', 'BD5D', 'BDEE', 'BDD5', 'BDE8', 'BDDD'};
+humSIZE = 1;
+objSIZE = 15;
 OUTPUT = false;
 FIGURE = false;
-humSIZE = size(humID);
-humSIZE = humSIZE(2);
-objSIZE = size(objID);
-objSIZE = objSIZE(2);
+%humSIZE = size(humID);
+%humSIZE = humSIZE(2);
+%objSIZE = size(objID);
+%objSIZE = objSIZE(2);
 
 %Calibration to center freq
 phasecor = (phase ./ freq) .* centerfreq;

@@ -1,9 +1,9 @@
 
-bad = [0,0,0,0,0,1,2,2,2,2,3,6,6];
-x = 3:15;
-y = (20 - bad)./20;
+bad = [0,0,0,0,0,0,0,1,1,2,2,2,3,3];
+x = 3:16;
+y = (15 - bad)./15;
 plot(x, y, '-o')
-axis([3, 15, 0, 1]);
+axis([3, 16, 0, 1]);
 xlabel('tag size')
 ylabel('accuracy')
 title('Pairing accuracy')

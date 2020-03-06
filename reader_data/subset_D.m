@@ -27,30 +27,36 @@ function [delta_T, delta_phase, delta_rssi, dtw_phase, dtw_rssi] = subset_D(humS
                 delta_rssi(i, j) = delta_rssi(i, j) / (s_end - s_first + 1);
 
                 %%DTW_phase
-                max_dif = max(hum_phase(s_first: s_end, i) - obj_phase(s_first: s_end, j));
-                min_dif = min(hum_phase(s_first: s_end, i) - obj_phase(s_first: s_end, j));
-                for k = min_dif:0.1:max_dif
-                    dtw_p = dtw(hum_phase(s_first: s_end, i), obj_phase(s_first: s_end, j) + k);
-                    if(k == min_dif)
-                        min_dtw = dtw_p;
-                    elseif(min_dtw > dtw_p)
-                        min_dtw = dtw_p;
-                    end
-                end
-                dtw_phase(i ,j) = min_dtw / (s_end - s_first + 1);
+                %max_dif = max(hum_phase(s_first: s_end, i) - obj_phase(s_first: s_end, j));
+                %min_dif = min(hum_phase(s_first: s_end, i) - obj_phase(s_first: s_end, j));
+                %for k = min_dif:0.1:max_dif
+                %    dtw_p = dtw(hum_phase(s_first: s_end, i), obj_phase(s_first: s_end, j) + k);
+                %    if(k == min_dif)
+                %        min_dtw = dtw_p;
+                %    elseif(min_dtw > dtw_p)
+                %        min_dtw = dtw_p;
+                %    end
+                %end
+                hum_phase(s_first: s_end, i) = hum_phase(s_first: s_end, i) - mean(hum_phase(s_first: s_end, i));
+                obj_phase(s_first: s_end, j) = obj_phase(s_first: s_end, j) - mean(obj_phase(s_first: s_end, j));
+                dtw_p = dtw(hum_phase(s_first: s_end, i), obj_phase(s_first: s_end, j));
+                dtw_phase(i ,j) = dtw_p / (s_end - s_first + 1);
                 
                 %%DTW_rssi
-                max_dif = max(hum_rssi(s_first: s_end, i) - obj_rssi(s_first: s_end, j));
-                min_dif = min(hum_rssi(s_first: s_end, i) - obj_rssi(s_first: s_end, j));
-                for k = min_dif:0.1:max_dif
-                    dtw_p = dtw(hum_rssi(s_first: s_end, i), obj_rssi(s_first: s_end, j) + k);
-                    if(k == min_dif)
-                        min_dtw = dtw_p;
-                    elseif(min_dtw > dtw_p)
-                        min_dtw = dtw_p;
-                    end
-                end
-                dtw_rssi(i ,j) = min_dtw / (s_end - s_first + 1);
+                %max_dif = max(hum_rssi(s_first: s_end, i) - obj_rssi(s_first: s_end, j));
+                %min_dif = min(hum_rssi(s_first: s_end, i) - obj_rssi(s_first: s_end, j));
+                %for k = min_dif:0.1:max_dif
+                %    dtw_p = dtw(hum_rssi(s_first: s_end, i), obj_rssi(s_first: s_end, j) + k);
+                %    if(k == min_dif)
+                %        min_dtw = dtw_p;
+                %    elseif(min_dtw > dtw_p)
+                %        min_dtw = dtw_p;
+                %    end
+                %end
+                hum_rssi(s_first: s_end, i) = hum_rssi(s_first: s_end, i) - mean(hum_rssi(s_first: s_end, i));
+                obj_rssi(s_first: s_end, j) = obj_rssi(s_first: s_end, j) - mean(obj_rssi(s_first: s_end, j));
+                dtw_r = dtw(hum_rssi(s_first: s_end, i), obj_rssi(s_first: s_end, j));
+                dtw_rssi(i ,j) = dtw_r / (s_end - s_first + 1);
             end
         end
     end
