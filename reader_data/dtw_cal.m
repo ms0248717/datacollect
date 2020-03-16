@@ -1,7 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./pair_data/DTW_h1_o1_3.csv');
-
+rawdata = readtable('./pair_data/DTW_h1_o1_80.csv');
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
 %EPC = split(string(rawdata.EPC(:)));

@@ -1,6 +1,6 @@
 clear; clc;
 
-rawdata = readtable('./pair_data/h4_o10_12.csv');
+rawdata = readtable('./pair_data/h4_o20_10.csv');
 
 %load data
 EPC = split(string(rawdata.x___EPC_(:)));
@@ -22,9 +22,9 @@ beta = 4;
 gamma = 30;
 centerfreq = 925.0;
 humID = {'BDEF', 'BDE7', 'BD5E', 'BD6F'};
-objID = {'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E', 'BDB0', 'BD95', 'BDAF', 'BD55', 'BD5D', 'BDEE', 'BDD5', 'BDE8', 'BDDD'};
+objID = {'BD75', 'BD96', 'BD57', 'BD68', 'BDCD', 'BD8E', 'BDB0', 'BD95', 'BDAF', 'BD55', 'BD5D', 'BDEE', 'BDD5', 'BDE8', 'BDDD', 'BD70', 'BD86', 'BD2F', 'BD1D', 'BD1E'};
 humSIZE = 4;
-objSIZE = 10;
+objSIZE = 20;
 OUTPUT = false;
 FIGURE = false;
 %humSIZE = size(humID);
