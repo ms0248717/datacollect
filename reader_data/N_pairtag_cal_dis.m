@@ -7,9 +7,9 @@ for lab = 1:4
         for ang = 1:3
             for num = 1:20
                 rawdata = readtable(['./gc_data/', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_', num2str(num), '.csv']);
-                outputphase = ['./ML_realdata/phase_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_3_', num2str(num), '.csv'];
-                outputrssi = ['./ML_realdata/rssi_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_3_', num2str(num), '.csv'];
-                outputdistance = ['./ML_realdata/distance_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_3_', num2str(num), '.csv'];
+                outputphase = ['./ML_realdata/gc_dis_ang_ori/phase_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_3_', num2str(num), '.csv'];
+                outputrssi = ['./ML_realdata/gc_dis_ang_ori/rssi_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_3_', num2str(num), '.csv'];
+                outputdistance = ['./ML_realdata/gc_dis_ang_ori/distance_', char(LABELS(lab)),'_',num2str(ANG(ang)),'_',num2str(DIS(dis)),'_0_3_', num2str(num), '.csv'];
 
                 %load data
                 %EPC = split(string(rawdata.x___EPC_(:)));
