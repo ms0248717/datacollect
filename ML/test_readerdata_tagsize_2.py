@@ -44,6 +44,7 @@ def read_data(file_path):
 LABELS = ["line", "shake", "square", "circle", "still"]
 DIS = ["50", "100", "150"]
 result = [0, 0]
+resultN = [0, 0]
 LABEL = ["move", "still"]
 SIZE = ["2", "4", "6", "8", "10", "12", "14"]
 
@@ -61,9 +62,9 @@ for tagsize in range(0, 7):
             #phase = read_data('../reader_data/ML_realdata/phase_'+'line'+'_0_50_' + str(j) + '.csv')
             #rssi = read_data('../reader_data/ML_realdata/rssi_'+'line'+'_0_50_' + str(j) + '.csv')
             phase = read_data('../reader_data/ML_realdata/gc_tagsize/phase_' +
-                            LABELS[lab] + '_' + SIZE[tagsize] + '_' + str(j) + '.csv')
+                            LABELS[lab] + '_' + SIZE[tagsize] + '_1_' + str(j) + '.csv')
             rssi = read_data('../reader_data/ML_realdata/gc_tagsize/rssi_' +
-                            LABELS[lab] + '_' + SIZE[tagsize] + '_' + str(j) + '.csv')
+                            LABELS[lab] + '_' + SIZE[tagsize] + '_1_' + str(j) + '.csv')
 
             X_phase = np.asarray(phase, dtype=np.float32)
             X_rssi = np.asarray(rssi, dtype=np.float32)
@@ -107,9 +108,14 @@ for tagsize in range(0, 7):
             # Take the class with the highest probability from the test predictions
             max_y_pred_test = np.argmax(y_pred_test, axis=1)
             # print(size)
+            resultN = [0, 0, 0, 0]
             for i in range(0, size):
-                # print(j,LABEL[max_y_pred_test[i]])
-                result[max_y_pred_test[i]] = result[max_y_pred_test[i]] + 1
+                # print(j,max_y_pred_test[i])
+                resultN[max_y_pred_test[i]] = resultN[max_y_pred_test[i]] + 1
+            # print(resultN)
+            # print(resultN.index(max(resultN)))
+            result[resultN.index(max(resultN))
+                ] = result[resultN.index(max(resultN))] + 1
 
         if lab == 4:
             ACC = ACC + result[1]

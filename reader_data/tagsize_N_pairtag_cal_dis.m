@@ -5,9 +5,9 @@ for lab = 1:5
     for tagsize = 2:2:14
         for num = 1:10
             rawdata = readtable(['./gc_tagsize_data/', char(LABELS(lab)),'_', num2str(tagsize), '_', num2str(num),'.csv']);
-            outputphase = ['./ML_realdata/gc_tagsize/phase_', char(LABELS(lab)),'_', num2str(tagsize), '_', num2str(num), '.csv'];
-            outputrssi = ['./ML_realdata/gc_tagsize/rssi_', char(LABELS(lab)),'_', num2str(tagsize), '_', num2str(num), '.csv'];
-            outputdistance = ['./ML_realdata/gc_tagsize/distance_', char(LABELS(lab)),'_', num2str(tagsize), '_', num2str(num), '.csv'];
+            outputphase = ['./ML_realdata/gc_tagsize/phase_', char(LABELS(lab)),'_', num2str(tagsize), '_5_', num2str(num), '.csv'];
+            outputrssi = ['./ML_realdata/gc_tagsize/rssi_', char(LABELS(lab)),'_', num2str(tagsize), '_5_', num2str(num), '.csv'];
+            outputdistance = ['./ML_realdata/gc_tagsize/distance_', char(LABELS(lab)),'_', num2str(tagsize), '_5_', num2str(num), '.csv'];
 
             %load data
             %EPC = split(string(rawdata.x___EPC_(:)));

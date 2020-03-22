@@ -53,7 +53,7 @@ result = [0, 0, 0, 0]
 resultN = [0, 0, 0, 0]
 mACC = [0, 0, 0, 0]
 ACC = 0
-outputN = 1
+outputN = 5
 face = 0
 
 model = load_model('./bestmodel/C4_30_10_90r_0r432_3.h5')
@@ -67,9 +67,9 @@ for tagsize in range(0, 7):
         for j in range(1, 11):
             #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
             rssi = read_data('../reader_data/ML_realdata/gc_tagsize/rssi_' +
-                            LABELS[lab] + '_' + TAGSIZE[tagsize] + '_' + str(j) + '.csv')
+                            LABELS[lab] + '_' + TAGSIZE[tagsize] + '_5_' + str(j) + '.csv')
             distance = read_data('../reader_data/ML_realdata/gc_tagsize/distance_' +
-                                LABELS[lab] + '_' + TAGSIZE[tagsize] + '_' + str(j) + '.csv')
+                                LABELS[lab] + '_' + TAGSIZE[tagsize] + '_5_' + str(j) + '.csv')
 
             X_distance = np.asarray(distance, dtype=np.float32)
             X_rssi = np.asarray(rssi, dtype=np.float32)
