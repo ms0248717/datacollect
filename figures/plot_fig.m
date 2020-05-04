@@ -1,23 +1,39 @@
 close all;
 
 figure;
-dis = [263.8 250.9 246; 255.4 257 252.6];
-bar(dis)
+dis = [253.5666667; 255];
+std = [9.194744876; 2.227105745];
+bar(dis);
+hold on;
 set(gca,'xticklabel',{'non-mag','mag'});
+errorbar(dis, std, 'b', 'Linestyle', 'None');
 grid on;
 xlabel('Tag')
 ylabel('Distance(cm)')
 title('Impact of distance');
+hold off;
 
 figure;
 rate = [48.42 49; 48.98 48.32; 46.58 48.58];
+std = [1.283354978, 1.334166406; 0.8786353055, 1.907092027; 1.397139936, 1.794993036];
 bar(rate)
+hold on;
 set(gca,'xticklabel',{'30', '60', '90'});
+ngroups = 3;
+nbars = 2;
+groupwidth = min(0.8, nbars/(nbars + 1.5));
+for i = 1:nbars
+    x = (1:ngroups) - groupwidth/2 + (2*i-1) * groupwidth / (2*nbars);
+    errorbar(x, rate(:,i), std(:,i), 'b', 'linestyle', 'none');
+end
 legend({'non-mag','mag'}, 'Location','southeast')
 grid on;
 xlabel('Distance(cm)')
 ylabel('Rate(t/s)')
 title('Read rate');
+hold off;
+
+
 
 figure;
 length = [11.705 12.645];
@@ -31,6 +47,7 @@ xlabel('Mag tag')
 ylabel('Length(cm)')
 title('Mag-tags effective distance');
 hold off;
+
 
 figure;
 rate = [48.5 48.5 48.6 48.6 48.7 48.6 48.6 48.7 48.6 48.6 28.9 19.6 16 6.8 0 0 0 0 0 0 0 0 0 0 0];
