@@ -29,7 +29,7 @@ namespace OctaneSdkUseCases
         // Create an instance of the ImpinjReader class.
         static ImpinjReader reader = new ImpinjReader();
         //public DataTable table = new DataTable("TagTable");
-        const string fullpath = @"..\..\..\..\gc_tagsize_data\circle_h1o1_2_10.csv";
+        const string fullpath = @"..\..\..\test.csv";
 
         static void ConnectToReader()
         {

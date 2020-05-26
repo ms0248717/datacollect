@@ -1,13 +1,13 @@
 clear; clc;
 LABELS = ["line","shake","square","circle","still"];
 for num = 1:20
-    rawdata = readtable(['./data/','still','_0_50_', num2str(num), '.csv']);
-    outputphase = ['./ML_realdata/phase_','still','_0_50_', num2str(num), '.csv'];
-    outputrssi = ['./ML_realdata/rssi_','still','_0_50_', num2str(num), '.csv'];
+    rawdata = readtable(['./gc_data/','still','_60_150_', num2str(num), '.csv']);
+    outputphase = ['./ML_realdata/phase_','still','_60_150_', num2str(num), '.csv'];
+    outputrssi = ['./ML_realdata/rssi_','still','_60_150_', num2str(num), '.csv'];
 
     %load data
-    %EPC = split(string(rawdata.x___EPC_(:)));
-    EPC = split(string(rawdata.EPC(:)));
+    EPC = split(string(rawdata.x___EPC_(:)));
+    %EPC = split(string(rawdata.EPC(:)));
     time = str2double(rawdata.Timestamp(:));
     freq = str2double(rawdata.ChannelInMhz(:));
     rssi = str2double(rawdata.PeakRssiInDbm(:));
