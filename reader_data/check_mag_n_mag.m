@@ -2,16 +2,16 @@ clear; clc;
 LABELS = {'still','line','shake','square','circle'};
 DIS = [50, 100, 150];
 ANG = [0, 30, 60];
-for lab = 3:3
-    for num = 4:4
+for lab = 5:5
+    for num = 3:3
         rawdata = readtable(['./mag_gc_data/b_mag_', char(LABELS(lab)),'_', num2str(num), '.csv']);
         outputphase = ['./ML_realdata/phase_b_mag_', char(LABELS(lab)),'_', num2str(num), '.csv'];
         outputrssi = ['./ML_realdata/rssi_b_mag_', char(LABELS(lab)),'_', num2str(num), '.csv'];
         outputdistance = ['./ML_realdata/distance_b_mag_', char(LABELS(lab)),'_', num2str(num), '.csv'];
         
         %load data
-        EPC = split(string(rawdata.x___EPC_(:)));
-        %EPC = split(string(rawdata.EPC(:)));
+        %EPC = split(string(rawdata.x___EPC_(:)));
+        EPC = split(string(rawdata.EPC(:)));
         time = str2double(rawdata.Timestamp(:));
         freq = str2double(rawdata.ChannelInMhz(:));
         rssi = str2double(rawdata.PeakRssiInDbm(:));
