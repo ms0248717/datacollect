@@ -52,15 +52,16 @@ model_save = 0
 store = 1
 high_acc = 0
 LABELS = ["line","shake","square","circle"]
+#LABELS = ["move","still"]
 
 trainlabel = read_data('../ML_data/train_label.csv')
 #trainphase = read_data('../ML_data/train_phase.csv')
 #trainrssi = read_data('../ML_data/train_rssi_nr.csv')
-traindistance = read_data('../ML_data/train_distance.csv')
+traindistance = read_data('../ML_data/train_rssi.csv')
 testlabel = read_data('../ML_data/test_label.csv')
 #testphase = read_data('../ML_data/test_phase.csv')
 #testrssi = read_data('../ML_data/test_rssi_nr.csv')
-testdistance = read_data('../ML_data/test_distance.csv')
+testdistance = read_data('../ML_data/test_rssi.csv')
 #Y_trainlabel_df = pd.DataFrame(trainlabel)
 
 Y_trainlabel = np.asarray(trainlabel)
