@@ -62,8 +62,8 @@ for lab in range(0, 4):
         result = [0, 0, 0, 0]
         for j in range(1, 4):
             #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
-            rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + '_' + str(j) + '.csv')
-            distance = read_data('../reader_data/ML_realdata/distance_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + '_'+ str(j) + '.csv')
+            rssi = read_data('../reader_data/ML_realdata/gc_otheruser/rssi_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + '_' + str(j) + '.csv')
+            distance = read_data('../reader_data/ML_realdata/gc_otheruser/distance_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + '_'+ str(j) + '.csv')
 
             X_distance = np.asarray(distance, dtype=np.float32)
             X_rssi = np.asarray(rssi, dtype=np.float32)

@@ -53,8 +53,8 @@ for lab in range(0,4):
 
             #phase = read_data('../reader_data/ML_realdata/phase_'+'line'+'_0_50_' + str(j) + '.csv')
             #rssi = read_data('../reader_data/ML_realdata/rssi_'+'line'+'_0_50_' + str(j) + '.csv')
-            phase = read_data('../reader_data/ML_realdata/phase_' + LABELS[lab] + '_1_' + str(user) + '_' + str(j) + '.csv')
-            rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_1_' + str(user) + '_' + str(j) + '.csv')
+            phase = read_data('../reader_data/ML_realdata/gc_otheruser/phase_' + LABELS[lab] + '_1_' + str(user) + '_' + str(j) + '.csv')
+            rssi = read_data('../reader_data/ML_realdata/gc_otheruser/rssi_' + LABELS[lab] + '_1_' + str(user) + '_' + str(j) + '.csv')
 
             X_phase = np.asarray(phase, dtype= np.float32)
             X_rssi = np.asarray(rssi, dtype= np.float32)
