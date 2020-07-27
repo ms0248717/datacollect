@@ -1,16 +1,16 @@
 clear; clc;
 LABELS = {'line','shake','square','circle'};
 for lab = 1:4
-    for user = 1:7
+    for user = 1:20
         for num = 1:3
             rawdata = readtable(['./otheruser_gc_data/', char(LABELS(lab)),'_',num2str(user),'_', num2str(num), '.csv']);
-            outputphase = ['./ML_realdata/phase_', char(LABELS(lab)),'_5_',num2str(user),'_', num2str(num), '.csv'];
-            outputrssi = ['./ML_realdata/rssi_', char(LABELS(lab)),'_5_',num2str(user),'_', num2str(num), '.csv'];
-            outputdistance = ['./ML_realdata/distance_', char(LABELS(lab)),'_5_',num2str(user),'_', num2str(num), '.csv'];
+            outputphase = ['./ML_realdata/phase_', char(LABELS(lab)),'_1_',num2str(user),'_', num2str(num), '.csv'];
+            outputrssi = ['./ML_realdata/rssi_', char(LABELS(lab)),'_1_',num2str(user),'_', num2str(num), '.csv'];
+            outputdistance = ['./ML_realdata/distance_', char(LABELS(lab)),'_1_',num2str(user),'_', num2str(num), '.csv'];
             
             %load data
-            EPC = split(string(rawdata.x___EPC_(:)));
-            %EPC = split(string(rawdata.EPC(:)));
+            %EPC = split(string(rawdata.x___EPC_(:)));
+            EPC = split(string(rawdata.EPC(:)));
             time = str2double(rawdata.Timestamp(:));
             freq = str2double(rawdata.ChannelInMhz(:));
             rssi = str2double(rawdata.PeakRssiInDbm(:));

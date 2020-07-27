@@ -58,12 +58,12 @@ model = load_model('./bestmodel/C4_30_10_90r_0r432_3.h5')
 for lab in range(0, 4):
     print(LABELS[lab])
     result = [0, 0, 0, 0]
-    for user in range(1, 8):
+    for user in range(1, 21):
         result = [0, 0, 0, 0]
         for j in range(1, 4):
             #phase = read_data('../reader_data/ML_realdata/phase_still_0_50_' + str(j) + '.csv')
-            rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + str(j) + '.csv')
-            distance = read_data('../reader_data/ML_realdata/distance_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + str(j) + '.csv')
+            rssi = read_data('../reader_data/ML_realdata/rssi_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + '_' + str(j) + '.csv')
+            distance = read_data('../reader_data/ML_realdata/distance_' + LABELS[lab] + '_' + str(outputN) +  '_' + str(user) + '_'+ str(j) + '.csv')
 
             X_distance = np.asarray(distance, dtype=np.float32)
             X_rssi = np.asarray(rssi, dtype=np.float32)
@@ -116,8 +116,8 @@ for lab in range(0, 4):
         ACC = ACC + result[lab]
         mACC[lab] = mACC[lab] + result[lab]
 
-print("Acc: ", ACC / 720.0)
-print("line: ", mACC[0] / 180.0)
-print("shake: ", mACC[1] / 180.0)
-print("square: ", mACC[2] / 180.0)
-print("circle: ", mACC[3] / 180.0)
+print("Acc: ", ACC / 240.0)
+print("line: ", mACC[0] / 60.0)
+print("shake: ", mACC[1] / 60.0)
+print("square: ", mACC[2] / 60.0)
+print("circle: ", mACC[3] / 60.0)

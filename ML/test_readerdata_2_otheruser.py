@@ -47,7 +47,7 @@ ACC = 0
 for lab in range(0,4):
     print(LABELS[lab])
     result = [0, 0]
-    for user in range(1,8):
+    for user in range(1, 21):
         result = [0, 0]
         for j in range(1 ,4):
 
@@ -103,7 +103,7 @@ for lab in range(0,4):
                 result[max_y_pred_test[i]] = result[max_y_pred_test[i]] + 1
 
         ACC = ACC + result[0]
-        result[0] = round(result[0]/20.0, 3)
-        result[1] = round(result[1]/20.0, 3)
+        #result[0] = round(result[0]/20.0, 3)
+        #result[1] = round(result[1]/20.0, 3)
     
-print(ACC / 300.0)
+print(ACC / 240.0)
